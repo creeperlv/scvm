@@ -1,0 +1,118 @@
+﻿using System;
+
+namespace scvm.core
+{
+	public static class SCVMInst
+	{
+		public static readonly Version InstructionVersion = new Version(1, 0, 0, 0);
+
+		/*
+		 * Legend
+		 * $L - Left Hand Side Operand
+		 * $R - Right Hand Side Operand
+		 * $T - Target Register
+		 * $S - Source Register
+		 */
+
+		/*
+		 * Register Value Range: 0x00 - 0xFF
+		 * Flag Value Range: 0x00 - 0xFF
+		 * 
+		 * Machine Statue: an unsigned long.
+		 * 
+		 * Interrupt: 0x0000 - 0xFFFF
+		 */
+
+		public const ushort NOP = 0x0000;
+		//ADD <Type> $L $R $T
+		public const ushort ADD = 0x0001;
+		public const ushort SUB = 0x0002;
+		public const ushort MUL = 0x0003;
+		public const ushort DIV = 0x0004;
+		public const ushort OFC_ADD = 0x0005;
+		public const ushort OFC_SUB = 0x0006;
+		public const ushort OFC_MUL = 0x0007;
+		public const ushort OFC_DIV = 0x0008;
+		//SET $T [VALUE]
+		//Assembly: Set $reg <type> <value>
+		public const ushort SET = 0x0009;
+		//CVT $L $R $T <Type>
+		public const ushort CVT = 0x000A;
+		//Single Calc:
+		//SCALC $S $T <OP>
+		public const ushort SCALC = 0x000B;
+		//DCALC Calc:
+		//SCALC $L $R $T <OP>
+		public const ushort DCALC = 0x000C;
+		//Save Register
+		//SR [IsRegister] $S $PTR <length/$length>
+		public const ushort SR = 0x000D;
+		public const ushort LR = 0x000E;
+		public const ushort SH = 0x000F;
+
+		//LG <Type> $T $L $R
+		public const ushort LG = 0x0020;
+
+		//JMP [IsRegister:0|1] [IsRelative:0|1] <value>
+		public const ushort JMP = 0x0010;
+		//JF [IsRegister:0|1] [IsRelative:0|1] <value> <register>
+		public const ushort JF = 0x0011;
+		//JFF [IsRegister:0|1] [IsRelative:0|1] <value> <TargetFlag>
+		public const ushort JFF = 0x0012;
+		//CMP <OP> <Type> $L $R $T
+		public const ushort CMP = 0x0013;
+		//Invoke a syscall/interrupt.
+		public const ushort SYSCALL = 0x0014;
+		//Reset Flag
+		//RF FlagID
+		public const ushort RF = 0x0014;
+		//Set Machine Status
+		//SETMSTAT $S
+		public const ushort SETMSTAT = 0xF000;
+		//Get Machine Status
+		//GETMSTAT $T
+		public const ushort GETMSTAT = 0xF001;
+		//Set Interrupt
+		//SETINT <Machine|Software> <Interrupt ID> $Configuration
+		//Ptr is used to store registers from caller.
+		//Configuration:
+		//Addresses: [$TargetPC_InKernel] [$StateStoragePtr] [$RetV]
+		//StateStorage Ptr will write:
+		//Ptr: PC from caller
+		//Ptr: PageTable Ptr
+		//struct MStat: Machine State
+		//byte: Flags
+		public const ushort SETINT = 0xF002;
+		public const ushort CLRINT = 0xF003;
+		//Set Privilege
+		public const ushort SETPRI = 0xF004;
+		// Jump and restore registers
+		//JMPWRST $StateStoragePtr
+		public const ushort JMPWRST = 0xF005;
+		//Jump and restore using registers
+		//JMPWLRST $PC $Page_Table_Ptr $MStat_Ptr $Flags
+		public const ushort JMPURST = 0xF006;
+		//Start A Core With Address
+		//CSTART $PC_Ptr
+		public const ushort CSTART = 0xF007;
+		//Get system info
+		//GETSYS $T INFO_ID
+		public const ushort GETSYS = 0x0030;
+		//Read From Port
+		//Pri. 1
+		//in $reg port/$port length/$length
+		//0038 01 30 3A 40
+		public const ushort IN = 0x0038;
+		//Write To Port
+		//Pri. 1
+		//out $reg port/$port length/$length
+		public const ushort OUT = 0x0039;
+		//Map Memory for write
+		//OMAP $reg $length
+		public const ushort OMAP = 0x003A;
+		//Map Memory for read
+		//IMAP $reg $length
+		public const ushort IMAP = 0x003B;
+
+	}
+}
