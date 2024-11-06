@@ -8,12 +8,23 @@ namespace scvm.tools.compiler.core
 	public class CompilationObject
 	{
 		public List<string> sourceFiles = new List<string>();
-		public List<PartialInstruction> instructions = new List<PartialInstruction>();
+		public List<IntermediateInstruction> instructions = new List<IntermediateInstruction>();
+		public Dictionary<string, Label> Labels = new Dictionary<string, Label>();
+		public Dictionary<string, string> Data = new Dictionary<string, string>();
 	}
 	[Serializable]
-	public class PartialInstruction
+	public class Label
 	{
-		public string? Label;
+		public LabelVisibility visibility = LabelVisibility.Default;
+		public string Content = "";
+		public int Position;
+	}
+	[Serializable]
+	public class IntermediateInstruction
+	{
+		public bool IsIntermediate;
+		public List<string?> UnsolvedSymbols = new List<string?>();
+
 		public SourcePosition sourcePosition;
 		public Instruction Instruction;
 	}

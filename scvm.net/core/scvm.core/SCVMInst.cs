@@ -18,7 +18,9 @@ namespace scvm.core
 		 * Register Value Range: 0x00 - 0xFF
 		 * Flag Value Range: 0x00 - 0xFF
 		 * 
-		 * Machine Statue: an unsigned long.
+		 * Machine State
+		 *	0:ulong - Kernel Base Address
+		 *	1:byte - Privilege Level
 		 * 
 		 * Interrupt: 0x0000 - 0xFFFF
 		 */
@@ -53,11 +55,11 @@ namespace scvm.core
 		//LG <Type> $T $L $R
 		public const ushort LG = 0x0020;
 
-		//JMP [IsRegister:0|1] [IsRelative:0|1] <value>
+		//JMP [IsRegister:0|1] <value>
 		public const ushort JMP = 0x0010;
-		//JF [IsRegister:0|1] [IsRelative:0|1] <value> <register>
+		//JF [IsRegister:0|1] <value> <register>
 		public const ushort JF = 0x0011;
-		//JFF [IsRegister:0|1] [IsRelative:0|1] <value> <TargetFlag>
+		//JFF [IsRegister:0|1] <value> <TargetFlag>
 		public const ushort JFF = 0x0012;
 		//CMP <OP> <Type> $L $R $T
 		public const ushort CMP = 0x0013;
@@ -67,10 +69,10 @@ namespace scvm.core
 		//RF FlagID
 		public const ushort RF = 0x0014;
 		//Set Machine Status
-		//SETMSTAT $S
+		//SETMSTAT <id> $S
 		public const ushort SETMSTAT = 0xF000;
 		//Get Machine Status
-		//GETMSTAT $T
+		//GETMSTAT <id> $T
 		public const ushort GETMSTAT = 0xF001;
 		//Set Interrupt
 		//SETINT <Machine|Software> <Interrupt ID> $Configuration
