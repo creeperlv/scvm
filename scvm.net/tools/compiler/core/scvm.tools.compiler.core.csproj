@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>scvm.tools.compiler.core</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\core\scvm.core\scvm.core.csproj" />
     <ProjectReference Include="..\..\core\scvm.tools.core\scvm.tools.core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CompilerFunctions\" />
   </ItemGroup>
 
 </Project>

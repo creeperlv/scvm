@@ -63,6 +63,9 @@ namespace scvm.core
 		public const ushort JFF = 0x0012;
 		//CMP <OP> <Type> $L $R $T
 		public const ushort CMP = 0x0013;
+		//Copy
+		//CP $src_ptr $tgt_ptr $len
+		public const ushort CP = 0x0013;
 		//Invoke a syscall/interrupt.
 		public const ushort SYSCALL = 0x0014;
 		//Reset Flag
