@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\directvm.linker.core\DirectVM.linker.core.csproj" />
+  </ItemGroup>
+
 </Project>
