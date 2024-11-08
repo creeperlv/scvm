@@ -1,16 +1,20 @@
 ﻿using scvm.core;
+using scvm.tools.core;
 
 namespace scvm.tools.compiler.shell;
 public class Program
 {
 	public static void Main(string[] args)
 	{
-		unsafe
+		Arguments arguments = new Arguments();
+		arguments.Definitions = [
+			new("output", ["-o", "--output"], "Output file" , true , false),
+			new("help", ["-h", "--help"], "Print this help" , false , false),
+		];
+		arguments.Resolve(args);
+		if (arguments.arguments.ContainsKey("help") || args.Length == 0)
 		{
-			Console.WriteLine($"sizeof(Instruction)={sizeof(Instruction)}");
-			Console.WriteLine($"sizeof(Instruction_OpSeparated)={sizeof(Instruction_OpSeparated)}");
-			Console.WriteLine($"sizeof(Instruction_OpSeparated_ByteSegmented)={sizeof(Instruction_OpSeparated_ByteSegmented)}");
-			Console.WriteLine($"Type.I={(byte)NativeType.I}");
+			arguments.PrintHelp(Console.Out, "scvm-asm");
 		}
 	}
 }

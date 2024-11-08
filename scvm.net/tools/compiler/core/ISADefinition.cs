@@ -1,5 +1,6 @@
 ﻿using scvm.core;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace scvm.tools.compiler.core
 {
@@ -8,6 +9,9 @@ namespace scvm.tools.compiler.core
 		public Dictionary<string, ProgramSegment> SegmentNames = new Dictionary<string, ProgramSegment>();
 		public Dictionary<string, LabelVisibility> LabelVisibilityNames = new Dictionary<string, LabelVisibility>();
 		public Dictionary<string, ushort> InstructionIDs = new Dictionary<string, ushort>();
+
+		public Dictionary<string, NativeType> NativeTypes = new Dictionary<string, NativeType>();
+		public Dictionary<string, byte> RegisterNames=new Dictionary<string, byte>();
 	}
 	public class DefaultISADefinition
 	{
@@ -67,12 +71,34 @@ namespace scvm.tools.compiler.core
 				{"getmstat", SCVMInst.GETMSTAT },
 				{"get.mstat", SCVMInst.GETMSTAT },
 
-			}
+			},
+
+			NativeTypes = new Dictionary<string, NativeType>() {
+				{"byte",NativeType.BU },
+				{"sbyte",NativeType.BS},
+				{"int16",NativeType.S},
+				{"short",NativeType.S},
+				{"uint16",NativeType.SU},
+				{"ushort",NativeType.SU},
+				{"int64",NativeType.L},
+				{"long",NativeType.L},
+				{"uint64",NativeType.LU},
+				{"ulong",NativeType.LU},
+				{"float",NativeType.F},
+				{"single",NativeType.F},
+				{"double",NativeType.D},
+				{"int",NativeType.I},
+				{"int32",NativeType.I},
+				{"uint",NativeType.IU},
+				{"uint32",NativeType.IU},
+				{"register",NativeType.R},
+			},
 		};
+		
 	}
 	public enum ProgramSegment
 	{
-		Code, Data,Definition
+		Code, Data, Definition
 	}
 	public enum LabelVisibility
 	{

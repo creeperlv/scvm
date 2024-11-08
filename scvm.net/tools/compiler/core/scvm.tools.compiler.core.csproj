@@ -16,8 +16,4 @@
     <ProjectReference Include="..\..\core\scvm.tools.core\scvm.tools.core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CompilerFunctions\" />
-  </ItemGroup>
-
 </Project>

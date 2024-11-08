@@ -31,21 +31,21 @@ namespace scvm.core
 		public const ushort SUB = 0x0002;
 		public const ushort MUL = 0x0003;
 		public const ushort DIV = 0x0004;
-		public const ushort OFC_ADD = 0x0005;
-		public const ushort OFC_SUB = 0x0006;
-		public const ushort OFC_MUL = 0x0007;
-		public const ushort OFC_DIV = 0x0008;
+		public const ushort OFC_ADD = 0x0009;
+		public const ushort OFC_SUB = 0x000A;
+		public const ushort OFC_MUL = 0x000B;
+		public const ushort OFC_DIV = 0x000C;
 		//SET $T [VALUE]
 		//Assembly: Set $reg <type> <value>
-		public const ushort SET = 0x0009;
+		public const ushort SET = 0x0005;
 		//CVT $L $R $T <Type>
-		public const ushort CVT = 0x000A;
+		public const ushort CVT = 0x0006;
 		//Single Calc:
 		//SCALC $S $T <OP>
-		public const ushort SCALC = 0x000B;
+		public const ushort SCALC = 0x0007;
 		//DCALC Calc:
 		//SCALC $L $R $T <OP>
-		public const ushort DCALC = 0x000C;
+		public const ushort DCALC = 0x0008;
 		//Save Register
 		//SR [IsRegister] $S $PTR <length/$length>
 		public const ushort SR = 0x000D;

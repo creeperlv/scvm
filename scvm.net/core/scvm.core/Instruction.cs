@@ -4,7 +4,7 @@ namespace scvm.core
 {
 	public enum NativeType : byte
 	{
-		BS = 0, BU, S, SU, I, IU, L, LU, F, D,
+		BS = 0, BU, S, SU, I, IU, L, LU, F, D, R
 	}
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Instruction
