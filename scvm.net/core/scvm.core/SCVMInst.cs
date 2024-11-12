@@ -81,7 +81,7 @@ namespace scvm.core
 		//SETINT <Machine|Software> <Interrupt ID> $Configuration
 		//Ptr is used to store registers from caller.
 		//Configuration:
-		//Addresses: [$TargetPC_InKernel] [$StateStoragePtr] [$RetV]
+		//[ReturnValueRegister] [ReturnValueLength] [$TargetPC_InKernel] [$StateStoragePtr] [$RetV]
 		//StateStorage Ptr will write:
 		//Ptr: PC from caller
 		//Ptr: PageTable Ptr

@@ -5,6 +5,8 @@ namespace scvm.core
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe struct InterruptConfig
 	{
+		public byte ReturnValueRegister;
+		public byte ReturnValueLength;
 		public long PC;
 		public long RegisterStore;
 		public long MStat;
