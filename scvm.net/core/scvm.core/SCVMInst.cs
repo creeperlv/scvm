@@ -70,7 +70,7 @@ namespace scvm.core
 		public const ushort SYSCALL = 0x0014;
 		//Reset Flag
 		//RF FlagID
-		public const ushort RF = 0x0014;
+		public const ushort RF = 0x0015;
 		//Set Machine Status
 		//SETMSTAT <id> $S
 		public const ushort SETMSTAT = 0xF000;

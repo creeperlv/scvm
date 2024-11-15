@@ -17,6 +17,19 @@ namespace scvm.tools.core
 		public Arguments()
 		{
 		}
+		public bool TryGet(string key, out string? value)
+		{
+			if (arguments.TryGetValue(key, out value))
+			{
+				return true;
+			}
+			value = null;
+			if (SingleStringArgument.Contains(key))
+			{
+				return true;
+			}
+			return false;
+		}
 		public void PrintHelp(TextWriter output, string name)
 		{
 			output.WriteLine("Usage:");
@@ -49,7 +62,7 @@ namespace scvm.tools.core
 		public static string DefaultDescriptionLookup(string s) => s;
 		public bool TryFindDefinition(string str, [MaybeNullWhen(false)] out ArgumentDefinition definition)
 		{
-			var id=str.IndexOfAny(SegmentChars);
+			var id = str.IndexOfAny(SegmentChars);
 			if (id >= 0)
 			{
 

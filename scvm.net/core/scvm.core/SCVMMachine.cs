@@ -8,6 +8,10 @@ namespace scvm.core
 	{
 		public IMemoryManagementUnit MMU;
 		public SCVMCPU CPU;
+		public byte* UnknownInterrupt(int Processor, InterruptType InterruptType, ushort InterruptID)
+		{
+			return null;
+		}
 		public byte* SegFault(int CPU, ulong Address)
 		{
 			return null;

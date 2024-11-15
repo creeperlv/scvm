@@ -7,7 +7,7 @@ namespace scvm.core
 	{
 		public List<Memory> Memories;
 		public SCVMMachine machine;
-		public byte* GetPtr(ulong ptr, ulong PageTable, int CallerCPU, int AssumedAccessSize)
+		public byte* GetPtr(ulong ptr, ulong PageTable, int CallerProcessor, int AssumedAccessSize)
 		{
 			var table = GetTable(PageTable);
 			bool IsHit = false;
@@ -16,7 +16,7 @@ namespace scvm.core
 				var address = GetFromPhysicalAddress(ptr, &IsHit);
 				if (!IsHit)
 				{
-					machine.SegFault(CallerCPU, ptr);
+					machine.SegFault(CallerProcessor, ptr);
 				}
 				return address;
 			}
@@ -25,12 +25,12 @@ namespace scvm.core
 				var __ptr = table->Translate(ptr, &IsHit);
 				if (!IsHit)
 				{
-					machine.SegFault(CallerCPU, ptr);
+					machine.SegFault(CallerProcessor, ptr);
 				}
 				var address = GetFromPhysicalAddress(__ptr, &IsHit);
 				if (!IsHit)
 				{
-					machine.SegFault(CallerCPU, __ptr);
+					machine.SegFault(CallerProcessor, __ptr);
 				}
 				return address;
 			}

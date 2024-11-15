@@ -2,6 +2,6 @@
 {
 	public interface IMemoryManagementUnit
 	{
-		unsafe byte* GetPtr(ulong ptr, ulong PageTable, int CallerCPU, int AssumedAccessSize);
+		unsafe byte* GetPtr(ulong ptr, ulong PageTable, int CallerProcessor, int AssumedAccessSize);
 	}
 }
