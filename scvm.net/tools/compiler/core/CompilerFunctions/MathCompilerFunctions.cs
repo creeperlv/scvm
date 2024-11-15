@@ -27,12 +27,13 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 					return false;
 			}
 			Instruction instruction = default;
+			SourcePosition sourcePosition=IInstruction.sourcePosition;
 			IntPtr InstPtr = (IntPtr)(&instruction);
 			InstPtr.Set(instID);
 			SegmentTraveler st = new SegmentTraveler(s);
 			if (!st.GoNext())
 			{
-				result.AddError(new IncompletInstructionError(st.Current));
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
 				return false;
 			}
 			var current = st.Current;
@@ -42,26 +43,26 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			}
 			else
 			{
-				result.AddError(new UnknownBaseTypeError(current));
+				result.AddError(new UnknownBaseTypeError(current, sourcePosition));
 				return false;
 			}
 			if (!st.GoNext())
 			{
-				result.AddError(new IncompletInstructionError(st.Current));
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
 				return false;
 			}
 			current = st.Current;
 			var T = current;
 			if (!st.GoNext())
 			{
-				result.AddError(new IncompletInstructionError(st.Current));
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
 				return false;
 			}
 			current = st.Current;
 			var L = current;
 			if (!st.GoNext())
 			{
-				result.AddError(new IncompletInstructionError(st.Current));
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
 				return false;
 			}
 			current = st.Current;
@@ -70,12 +71,12 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			byte _L;
 			if (!DataConversion.TryParseRegister(CurrentDefinition, T.content, result, out _T))
 			{
-				result.AddError(new TypeMismatchError(T, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+				result.AddError(new TypeMismatchError(T, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
 				return false;
 			}
 			if (!DataConversion.TryParseRegister(CurrentDefinition, L.content, result, out _L))
 			{
-				result.AddError(new TypeMismatchError(T, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+				result.AddError(new TypeMismatchError(L, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
 				return false;
 			}
 			InstPtr.Set(_T, 3);
@@ -86,7 +87,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 
 				if (!DataConversion.TryParseRegister(CurrentDefinition, R.content, result, out _R))
 				{
-					result.AddError(new TypeMismatchError(T, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+					result.AddError(new TypeMismatchError(R, sourcePosition,CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
 					return false;
 				}
 				InstPtr.Set(_R, 5);

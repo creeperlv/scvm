@@ -5,6 +5,17 @@ using System.Text;
 
 namespace scvm.tools.compiler.core.utilities
 {
+	public static class SegmentUtils
+	{
+		public static string GetPosition(this Segment segment)
+		{
+			return $"{segment.ID}:{segment.Index}";
+		}
+		public static string GetFullPosition(this Segment segment, SourcePosition position)
+		{
+			return $"{segment.content ?? "<null>"}({segment.ID}:{position.Line}:{segment.Index})";
+		}
+	}
 	public class SegmentTraveler
 	{
 		public Segment HEAD;

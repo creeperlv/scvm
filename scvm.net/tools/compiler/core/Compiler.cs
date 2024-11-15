@@ -19,14 +19,16 @@ namespace scvm.tools.compiler.core
 			SCVMCompilerScanner scanner = new SCVMCompilerScanner();
 			int PC = 0;
 			ProgramSegment segment = ProgramSegment.Code;
+			int LineNumber = 0;
 			while (true)
 			{
-
+				LineNumber++;
 				var line = streamReader.ReadLine();
 				if (line == null)
 				{
 					break;
 				}
+				result.Result.sourceFiles.Add(FileName);
 				var HEAD = scanner.Scan(line, false, FileName);
 				var Next = HEAD.Next;
 				var HEAD_NAME = HEAD.content;
@@ -46,6 +48,7 @@ namespace scvm.tools.compiler.core
 								{
 
 									IntermediateInstruction instruction = new IntermediateInstruction();
+									instruction.sourcePosition = new SourcePosition() { FileID = 0, Line = LineNumber };
 									if (assemble(CurrentDefinition, instID, HEAD, result, instruction, PC))
 									{
 										result.Result.instructions.Add(instruction);
@@ -54,6 +57,7 @@ namespace scvm.tools.compiler.core
 								}
 								else
 								{
+									var sourcePosition = new SourcePosition() { FileID = 0, Line = LineNumber };
 									if (Next != null)
 									{
 										if (Next.content == ":")
@@ -67,7 +71,7 @@ namespace scvm.tools.compiler.core
 											continue;
 										}
 									}
-									result.AddError(new UnimplementedInstructionError(HEAD_NAME, HEAD));
+									result.AddError(new UnimplementedInstructionError(HEAD_NAME, HEAD, sourcePosition));
 								}
 							}
 						}
