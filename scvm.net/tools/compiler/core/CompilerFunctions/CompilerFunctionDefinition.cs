@@ -26,6 +26,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				{SCVMInst.OFC_SUB,MathCompilerFunctions.Compile_BasicMath },
 				{SCVMInst.OFC_MUL,MathCompilerFunctions.Compile_BasicMath },
 				{SCVMInst.OFC_DIV,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.JMP,JumpCompilerFunctions.Assemble_JMP },
 			}
 		};
 	}

@@ -4,16 +4,28 @@ namespace scvm.tools.compiler.core.utilities
 {
 	public class DataConversion
 	{
-		public static bool TryParseRegister(ISADefinition CurrentDefinition,string name, OperationResult<CompilationObject> obj, out byte register)
+		public static bool TryParseInt(string str, OperationResult<CompilationObject> obj, out int value)
+		{
+			if (int.TryParse(str, out value)) return true;
+			if (obj.Result.Definitions.TryGetValue(str, out var valueStr))
+			{
+				if (int.TryParse(valueStr, out value))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		public static bool TryParseRegister(ISADefinition CurrentDefinition, string name, OperationResult<CompilationObject> obj, out byte register)
 		{
 			if (TryParseRegister(CurrentDefinition, name, out register)) return true;
 			if (obj.Result.Definitions.TryGetValue(name, out var value))
 			{
-				return TryParseRegister(CurrentDefinition,value, obj, out register);
+				return TryParseRegister(CurrentDefinition, value, obj, out register);
 			}
 			return false;
 		}
-		public static bool TryParseRegister(ISADefinition CurrentDefinition,string name, out byte register)
+		public static bool TryParseRegister(ISADefinition CurrentDefinition, string name, out byte register)
 		{
 			if (!name.StartsWith('$'))
 			{
