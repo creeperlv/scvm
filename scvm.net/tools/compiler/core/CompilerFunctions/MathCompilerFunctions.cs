@@ -10,7 +10,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 {
 	public static class MathCompilerFunctions
 	{
-		public unsafe static bool Compile_BasicMath(ISADefinition CurrentDefinition,ushort instID, Segment s, OperationResult<CompilationObject> result, IntPtr InstPtr, int PC)
+		public unsafe static bool Compile_BasicMath(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
 			switch (instID)
 			{
@@ -26,6 +26,8 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				default:
 					return false;
 			}
+			Instruction instruction = default;
+			IntPtr InstPtr = (IntPtr)(&instruction);
 			InstPtr.Set(instID);
 			SegmentTraveler st = new SegmentTraveler(s);
 			if (!st.GoNext())
@@ -89,7 +91,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				}
 				InstPtr.Set(_R, 5);
 			}
-			//((Instruction*)InstPtr)[0] = InstPtr;
+			IInstruction.Instruction = instruction;
 			return true;
 		}
 

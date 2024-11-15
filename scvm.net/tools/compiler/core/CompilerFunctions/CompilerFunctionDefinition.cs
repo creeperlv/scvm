@@ -7,7 +7,7 @@ using System.Text;
 
 namespace scvm.tools.compiler.core.CompilerFunctions
 {
-	public delegate bool CompilerFunction(ISADefinition CurrentDefinition, ushort InstructionID, Segment HEAD, OperationResult<CompilationObject> result, IntPtr PointerToInstructionStruct, int PC);
+	public delegate bool CompilerFunction(ISADefinition CurrentDefinition, ushort InstructionID, Segment HEAD, OperationResult<CompilationObject> result, IntermediateInstruction PointerToInstructionStruct, int PC);
 	public class CompilerFunctionDefinition
 	{
 		public Dictionary<ushort, CompilerFunction> CompilerFunctions = new Dictionary<ushort, CompilerFunction>();
