@@ -64,7 +64,7 @@ namespace scvm.core
 		}
 		public unsafe void Execute()
 		{
-			var inst = ParentCPU.Machine.MMU.GetPtr(PC, PageTable, ThisProcessorID, sizeof(Instruction));
+			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)PC, PageTable, ThisProcessorID, sizeof(Instruction));
 			Instruction instruction = ((Instruction*)inst)[0];
 			var Op = instruction.CastAs<Instruction, ushort>();
 			switch (Op)
@@ -87,6 +87,31 @@ namespace scvm.core
 				case SCVMInst.DIV:
 					{
 						SCVMMathFunctions.MathDiv(Register, instruction);
+					}
+					break;
+				case SCVMInst.JMP:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
+						if (InstAlt.D1 == 1)
+						{
+							var offset = Register.GetData<int>(InstAlt.D2.CastAs<uint, int>(0));
+							if (offset > 0)
+								PC += (uint)offset;
+							else
+							{
+								PC -= (uint)(-offset);
+							}
+						}
+						else
+						{
+							var offset = InstAlt.D2.CastAs<uint, int>(0);
+							if (offset > 0)
+								PC += (uint)offset;
+							else
+							{
+								PC -= (uint)(-offset);
+							}
+						}
 					}
 					break;
 				case SCVMInst.SYSCALL:
