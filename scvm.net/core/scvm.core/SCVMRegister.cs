@@ -35,7 +35,7 @@ namespace scvm.core
 		{
 			for (int i = 0; i < Len; i++)
 			{
-				((T*)(Registers + Offset))[i] = src[i];
+				(Registers + Offset)[i] = src[i];
 			}
 		}
 	}
