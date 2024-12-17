@@ -31,6 +31,13 @@ namespace scvm.core
 			if (offset + sizeof(T) > RegisterLimit) return;
 			((T*)(Registers + offset))[0] = d;
 		}
+		public void CopyFrom(int Offset, byte* src, int Len)
+		{
+			for (int i = 0; i < Len; i++)
+			{
+				((T*)(Registers + Offset))[i] = src[i];
+			}
+		}
 	}
 	public unsafe struct SCVMProcessorFlag
 	{

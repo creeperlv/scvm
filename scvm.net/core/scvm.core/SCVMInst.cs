@@ -47,7 +47,7 @@ namespace scvm.core
 		//SCALC $L $R $T <OP>
 		public const ushort DCALC = 0x0008;
 		//Save Register
-		//SR [IsRegister] $S $PTR <length/$length>
+		//SR [IsRegister] $Register $PTR <length/$length>
 		public const ushort SR = 0x000D;
 		public const ushort LR = 0x000E;
 		public const ushort SH = 0x000F;
