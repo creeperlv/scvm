@@ -38,6 +38,13 @@ namespace scvm.core
 				(Registers + Offset)[i] = src[i];
 			}
 		}
+		public void CopyTo(int Offset, byte* Target, int Len)
+		{
+			for (int i = 0; i < Len; i++)
+			{
+				Target[i] = (Registers + Offset)[i];
+			}
+		}
 	}
 	public unsafe struct SCVMProcessorFlag
 	{

@@ -138,6 +138,25 @@ namespace scvm.core
 					}
 					break;
 				case SCVMInst.SR:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);
+						var IsReg = InstAlt.D0;
+						var TargetReg = InstAlt.D1;
+						var PointerRegister = InstAlt.D2;
+						var Ptr = Register.GetData<ulong>(PointerRegister);
+						byte Len = 0;
+						var Length = InstAlt.D3;
+						if (IsReg == 0)
+						{
+							Len = Length;
+						}
+						else
+						{
+							Len = Register.GetData<byte>(Length);
+						}
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.PageTable, this.ThisProcessorID, Len);
+						Register.CopyTo(TargetReg, ptr, Len);
+					}
 					break;
 				case SCVMInst.SYSCALL:
 					{
