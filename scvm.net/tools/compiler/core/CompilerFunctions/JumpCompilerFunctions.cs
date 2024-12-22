@@ -54,7 +54,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				}
 				else
 				{
-					IInstruction.UnsolvedSymbols.Add(ValueSeg.content);
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(ValueSeg.content, 0));
 					IInstruction.IsIntermediate = true;
 				}
 			}

@@ -30,10 +30,26 @@ namespace scvm.tools.compiler.core
 	public class IntermediateInstruction
 	{
 		public bool IsIntermediate;
-		public List<string?> UnsolvedSymbols = new List<string?>();
+		public List<UnsolvedSymbol> UnsolvedSymbols = new List<UnsolvedSymbol>();
 
 		public SourcePosition sourcePosition;
 		public Instruction Instruction;
+	}
+	[Serializable]
+	public class UnsolvedSymbol
+	{
+		public string? Symbol;
+		public int TargetArumentPos;
+
+		public UnsolvedSymbol()
+		{
+
+		}
+		public UnsolvedSymbol(string symbol, int targetArumentPos)
+		{
+			Symbol = symbol;
+			TargetArumentPos = targetArumentPos;
+		}
 	}
 	[Serializable]
 	[StructLayout(LayoutKind.Sequential)]
