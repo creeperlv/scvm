@@ -44,7 +44,7 @@ namespace scvm.tools.compiler.core
 
 							if (CurrentDefinition.InstructionIDs.TryGetValue(HEAD_NAME, out var instID))
 							{
-								if (DefaultCompilerFunctionDefinition.GetDefault().CompilerFunctions.TryGetValue(instID, out var assemble))
+								if (DefaultCompilerFunctionDefinition.GetDefault().FirstPassCompilerFunctions.TryGetValue(instID, out var assemble))
 								{
 
 									IntermediateInstruction instruction = new IntermediateInstruction();
