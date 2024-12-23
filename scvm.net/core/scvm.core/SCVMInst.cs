@@ -55,11 +55,13 @@ namespace scvm.core
 		//LG <Type> $T $L $R
 		public const ushort LG = 0x0020;
 
-		//JMP [IsRegister:0|1] <value>
+		//JMP [IsRegister:0|1] <($)TargetPC>
 		public const ushort JMP = 0x0010;
-		//JF [IsRegister:0|1] <value> <register>
+		//JF [IsRegister:0|1] <($)TargetPC> <register>
+		//Jump If Non Zero
 		public const ushort JF = 0x0011;
-		//JFF [IsRegister:0|1] <value> <TargetFlag>
+		//JFF [IsRegister:0|1] <($)TargetPC> <TargetFlag>
+		// Jump If Flag Non Zero
 		public const ushort JFF = 0x0012;
 		//CMP <OP> <Type> $L $R $T
 		public const ushort CMP = 0x0013;

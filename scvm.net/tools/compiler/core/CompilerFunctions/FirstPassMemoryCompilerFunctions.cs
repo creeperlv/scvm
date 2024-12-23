@@ -8,7 +8,7 @@ using System;
 
 namespace scvm.tools.compiler.core.CompilerFunctions
 {
-	public static class MemoryFunctions
+	public static class FirstPassMemoryCompilerFunctions
 	{
 		public unsafe static bool Compile_BasicLRSR(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{

@@ -8,7 +8,7 @@ using System;
 
 namespace scvm.tools.compiler.core.CompilerFunctions
 {
-	public static class MathCompilerFunctions
+	public static class FirstPassMathCompilerFunctions
 	{
 		public unsafe static bool Compile_BasicMath(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{

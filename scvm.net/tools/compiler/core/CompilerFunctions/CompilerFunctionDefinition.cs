@@ -20,15 +20,18 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 		{
 			FirstPassCompilerFunctions = new Dictionary<ushort, FirstPassCompilerFunction>()
 			{
-				{SCVMInst.ADD,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.SUB,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.MUL,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.DIV,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_ADD,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_SUB,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_MUL,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_DIV,MathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.JMP,JumpCompilerFunctions.Assemble_JMP },
+				{SCVMInst.ADD,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.SUB,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.MUL,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.DIV,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_ADD,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_SUB,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_MUL,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_DIV,FirstPassMathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.JMP,FirstPassJumpCompilerFunctions.Assemble_JMP },
+				{SCVMInst.JF,FirstPassJumpCompilerFunctions.Assemble_JF },
+				{SCVMInst.LR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
+				{SCVMInst.SR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
 			}
 		};
 	}
