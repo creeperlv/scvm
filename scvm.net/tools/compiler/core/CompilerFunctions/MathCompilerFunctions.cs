@@ -43,8 +43,11 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			}
 			else
 			{
-				result.AddError(new UnknownBaseTypeError(current, sourcePosition));
-				return false;
+				//result.AddError(new UnknownBaseTypeError(current, sourcePosition));
+				//return false;
+
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(current.content, 0));
+				IInstruction.IsIntermediate = true;
 			}
 			if (!st.GoNext())
 			{
@@ -71,13 +74,16 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			byte _L;
 			if (!DataConversion.TryParseRegister(CurrentDefinition, T.content, result, out _T))
 			{
-				result.AddError(new TypeMismatchError(T, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
-				return false;
+				//result.AddError(new TypeMismatchError(T, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+				//return false;
+
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(T.content, 1));
+				IInstruction.IsIntermediate = true;
 			}
 			if (!DataConversion.TryParseRegister(CurrentDefinition, L.content, result, out _L))
 			{
-				result.AddError(new TypeMismatchError(L, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
-				return false;
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(L.content, 2));
+				IInstruction.IsIntermediate = true;
 			}
 			InstPtr.Set(_T, 3);
 			InstPtr.Set(_L, 4);
@@ -87,8 +93,8 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 
 				if (!DataConversion.TryParseRegister(CurrentDefinition, R.content, result, out _R))
 				{
-					result.AddError(new TypeMismatchError(R, sourcePosition,CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
-					return false;
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(R.content, 2));
+					IInstruction.IsIntermediate = true;
 				}
 				InstPtr.Set(_R, 5);
 			}

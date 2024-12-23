@@ -215,5 +215,54 @@ namespace scvm.tools.compiler.core.utilities
 			data = default;
 			return false;
 		}
+		public static bool TryParseUByte(string name, out byte data)
+		{
+			if (byte.TryParse(name, out data))
+			{
+				return true;
+			}
+			ulong d = 0;
+			var n = name.ToLower();
+			if (n.StartsWith("0x"))
+			{
+				n = n.Substring(2);
+
+				for (int i = 0; i < n.Length; i++)
+				{
+					char c = n[i];
+					if (HexChar2Byte(c, out var b) == false)
+					{
+						data = 0;
+						return false;
+					}
+					d += b;
+					if (i != 0)
+						d *= 0x10;
+				}
+				data = (byte)d;
+				return true;
+			}
+			if (n.StartsWith("0b"))
+			{
+				n = n.Substring(2);
+
+				for (int i = 0; i < n.Length; i++)
+				{
+					char c = n[i];
+					if (BinChar2Byte(c, out var b) == false)
+					{
+						data = 0;
+						return false;
+					}
+					d += b;
+					if (i != 0)
+						d *= 0b10;
+				}
+				data = (byte)d;
+				return true;
+			}
+			data = default;
+			return false;
+		}
 	}
 }

@@ -56,12 +56,38 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			if (!DataConversion.TryParseRegister(CurrentDefinition, Register.content, result, out var IRegister))
 			{
 
+				InstPtr.Set(IRegister, 3);
+			}
+			else
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Register.content, 0));
+				IInstruction.IsIntermediate = true;
+			}
+			if (!DataConversion.TryParseRegister(CurrentDefinition, Ptr.content, result, out var IPtr))
+			{
+				InstPtr.Set(IPtr, 4);
+			}
+			else
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Ptr.content, 1));
+				IInstruction.IsIntermediate = true;
+			}
+			if (!DataConversion.TryParseRegister(CurrentDefinition, Length.content, result, out var RLen))
+			{
+				IsRegister = 1;
+				InstPtr.Set(RLen, 5);
+			}
+			else if(!DataConversion.TryParseUByte(Length.content,out var ILen))
+			{
+				InstPtr.Set(ILen, 5);
 			}
 			else
 			{
 
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Ptr.content, 1));
+				IInstruction.IsIntermediate = true;
 			}
-
+			InstPtr.Set(IsRegister, 2);
 			return true;
 		}
 
