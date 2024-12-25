@@ -69,6 +69,7 @@ namespace scvm.core
 		//CP $src_ptr $tgt_ptr $len
 		public const ushort CP = 0x0013;
 		//Invoke a syscall/interrupt.
+		//SYSCALL <Value>
 		public const ushort SYSCALL = 0x0014;
 		//Reset Flag
 		//RF FlagID
