@@ -46,7 +46,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 					}
 				}
 				else
-				if (DataConversion.TryParseInt(ValueSeg.content, result, out var V))
+				if (DataConversion.TryParseInt(CurrentDefinition, ValueSeg.content, result, out var V))
 				{
 					InstPtr.Set(0, 2);
 					InstPtr.Set(V, 3);
@@ -100,7 +100,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 					}
 				}
 				else
-				if (DataConversion.TryParseInt(ValueSeg.content, result, out var V))
+				if (DataConversion.TryParseInt(CurrentDefinition, ValueSeg.content, result, out var V))
 				{
 					InstPtr.Set(0, 2);
 					InstPtr.Set(V, 3);

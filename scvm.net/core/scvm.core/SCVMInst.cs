@@ -74,12 +74,12 @@ namespace scvm.core
 		//Reset Flag
 		//RF FlagID
 		public const ushort RF = 0x0015;
-		//Set Machine Status
-		//SETMSTAT <id> $S
-		public const ushort SETMSTAT = 0xF000;
-		//Get Machine Status
-		//GETMSTAT <id> $T
-		public const ushort GETMSTAT = 0xF001;
+		//System Register Write
+		//SYSREGW <id> $S
+		public const ushort SYSREGW = 0xF000;
+		//System Register Read
+		//SYSREGR <id> $T
+		public const ushort SYSREGR = 0xF001;
 		//Set Interrupt
 		//SETINT <Machine|Software> <Interrupt ID> $Configuration
 		//Ptr is used to store registers from caller.

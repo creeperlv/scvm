@@ -77,7 +77,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				IsRegister = 1;
 				InstPtr.Set(RLen, 5);
 			}
-			else if(!DataConversion.TryParseUByte(Length.content,out var ILen))
+			else if (!DataConversion.TryParseUByte(CurrentDefinition, Length.content, out var ILen))
 			{
 				InstPtr.Set(ILen, 5);
 			}

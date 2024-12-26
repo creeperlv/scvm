@@ -1,11 +1,13 @@
 ﻿using LibCLCC.NET.Operations;
+using System.Xml.Linq;
 
 namespace scvm.tools.compiler.core.utilities
 {
 	public class DataConversion
 	{
-		public static bool TryParseInt(string str, OperationResult<CompilationObject> obj, out int value)
+		public static bool TryParseInt(ISADefinition CurrentDefinition, string str, OperationResult<CompilationObject> obj, out int value)
 		{
+			str = CurrentDefinition.TranslateSymbol(str);
 			if (int.TryParse(str, out value)) return true;
 			if (obj.Result.Definitions.TryGetValue(str, out var valueStr))
 			{
@@ -18,6 +20,7 @@ namespace scvm.tools.compiler.core.utilities
 		}
 		public static bool TryParseRegister(ISADefinition CurrentDefinition, string name, OperationResult<CompilationObject> obj, out byte register)
 		{
+			name=CurrentDefinition.TranslateSymbol(name);
 			if (TryParseRegister(CurrentDefinition, name, out register)) return true;
 			if (obj.Result.Definitions.TryGetValue(name, out var value))
 			{
@@ -215,8 +218,9 @@ namespace scvm.tools.compiler.core.utilities
 			data = default;
 			return false;
 		}
-		public static bool TryParseUByte(string name, out byte data)
+		public static bool TryParseUByte(ISADefinition CurrentDefinition,string name, out byte data)
 		{
+			name = CurrentDefinition.TranslateSymbol(name);
 			if (byte.TryParse(name, out data))
 			{
 				return true;

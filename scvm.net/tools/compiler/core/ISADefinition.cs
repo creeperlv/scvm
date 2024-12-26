@@ -9,9 +9,15 @@ namespace scvm.tools.compiler.core
 		public Dictionary<string, ProgramSegment> SegmentNames = new Dictionary<string, ProgramSegment>();
 		public Dictionary<string, LabelVisibility> LabelVisibilityNames = new Dictionary<string, LabelVisibility>();
 		public Dictionary<string, ushort> InstructionIDs = new Dictionary<string, ushort>();
+		public Dictionary<string, string> PredefinedSymbols = new Dictionary<string, string>();
 
 		public Dictionary<string, NativeType> NativeTypes = new Dictionary<string, NativeType>();
-		public Dictionary<string, byte> RegisterNames=new Dictionary<string, byte>();
+		public Dictionary<string, byte> RegisterNames = new Dictionary<string, byte>();
+		public string TranslateSymbol(string symbol)
+		{
+			if (PredefinedSymbols.ContainsKey(symbol)) return PredefinedSymbols[symbol];
+			return symbol;
+		}
 	}
 	public class DefaultISADefinition
 	{
@@ -64,12 +70,12 @@ namespace scvm.tools.compiler.core
 				{"syscall", SCVMInst.SYSCALL },
 				{"int", SCVMInst.SYSCALL },
 				{"rf", SCVMInst.RF },
-				{"setmstat", SCVMInst.SETMSTAT },
-				{"set.mstat", SCVMInst.SETMSTAT },
-				{"mstat.set", SCVMInst.SETMSTAT },
-				{"mstat.get", SCVMInst.GETMSTAT },
-				{"getmstat", SCVMInst.GETMSTAT },
-				{"get.mstat", SCVMInst.GETMSTAT },
+				{"setmstat", SCVMInst.SYSREGW },
+				{"set.mstat", SCVMInst.SYSREGW },
+				{"mstat.set", SCVMInst.SYSREGW },
+				{"mstat.get", SCVMInst.SYSREGR },
+				{"getmstat", SCVMInst.SYSREGR },
+				{"get.mstat", SCVMInst.SYSREGR },
 
 			},
 
@@ -94,7 +100,7 @@ namespace scvm.tools.compiler.core
 				{"register",NativeType.R},
 			},
 		};
-		
+
 	}
 	public enum ProgramSegment
 	{
