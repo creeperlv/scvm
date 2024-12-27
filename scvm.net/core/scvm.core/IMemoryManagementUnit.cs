@@ -1,6 +1,8 @@
-﻿namespace scvm.core
+﻿using System;
+
+namespace scvm.core
 {
-	public interface IMemoryManagementUnit
+	public interface IMemoryManagementUnit:IDisposable
 	{
 		unsafe byte* GetPtr(ulong ptr, ulong PageTable, int CallerProcessor, int AssumedAccessSize);
 	}

@@ -1,4 +1,5 @@
-﻿using scvm.core.utilities;
+﻿using scvm.core.libNative;
+using scvm.core.utilities;
 using System.Collections.Generic;
 
 namespace scvm.core
@@ -62,6 +63,15 @@ namespace scvm.core
 		public byte GetIndex(ulong ptr)
 		{
 			return ptr.CastAs<ulong, byte>(0);
+		}
+
+		public void Dispose()
+		{
+			foreach (var item in Memories)
+			{
+				if (item.Size > 0)
+					stdlib.free(item.Ptr);
+			}
 		}
 	}
 }
