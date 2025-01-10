@@ -30,6 +30,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				{SCVMInst.OFC_DIV,FirstPassMathCompilerFunctions.Compile_BasicMath },
 				{SCVMInst.JMP,FirstPassJumpCompilerFunctions.Assemble_JMP },
 				{SCVMInst.JF,FirstPassJumpCompilerFunctions.Assemble_JF },
+				{SCVMInst.JFF,FirstPassJumpCompilerFunctions.Assemble_JFF },
 				{SCVMInst.LR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
 				{SCVMInst.SR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
 				{SCVMInst.SYSCALL,FirstPassSysCompilerFunctions.Assemble_SYSCALL},
