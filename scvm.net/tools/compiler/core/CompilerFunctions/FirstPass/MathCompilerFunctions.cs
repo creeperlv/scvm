@@ -6,9 +6,9 @@ using scvm.tools.compiler.core.Errors;
 using scvm.tools.compiler.core.utilities;
 using System;
 
-namespace scvm.tools.compiler.core.CompilerFunctions
+namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 {
-	public static class FirstPassMathCompilerFunctions
+	public static class MathCompilerFunctions
 	{
 		public unsafe static bool Compile_BasicMath(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
@@ -27,7 +27,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 					return false;
 			}
 			Instruction instruction = default;
-			SourcePosition sourcePosition=IInstruction.sourcePosition;
+			SourcePosition sourcePosition = IInstruction.sourcePosition;
 			IntPtr InstPtr = (IntPtr)(&instruction);
 			InstPtr.Set(instID);
 			SegmentTraveler st = new SegmentTraveler(s);

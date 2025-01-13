@@ -1,6 +1,7 @@
 ﻿using LibCLCC.NET.Operations;
 using LibCLCC.NET.TextProcessing;
 using scvm.core;
+using scvm.tools.compiler.core.CompilerFunctions.FirstPass;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,22 +21,22 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 		{
 			FirstPassCompilerFunctions = new Dictionary<ushort, FirstPassCompilerFunction>()
 			{
-				{SCVMInst.ADD,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.SUB,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.MUL,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.DIV,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_ADD,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_SUB,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_MUL,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.OFC_DIV,FirstPassMathCompilerFunctions.Compile_BasicMath },
-				{SCVMInst.JMP,FirstPassJumpCompilerFunctions.Assemble_JMP },
-				{SCVMInst.JF,FirstPassJumpCompilerFunctions.Assemble_JF },
-				{SCVMInst.JFF,FirstPassJumpCompilerFunctions.Assemble_JFF },
-				{SCVMInst.LR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
-				{SCVMInst.SR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
-				{SCVMInst.SYSCALL,FirstPassSysCompilerFunctions.Assemble_SYSCALL},
-				{SCVMInst.RF,FirstPassSysCompilerFunctions.Assemble_RF},
-				{SCVMInst.CP,FirstPassMemoryCompilerFunctions.Compile_BasicCP},
+				{SCVMInst.ADD,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.SUB,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.MUL,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.DIV,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_ADD,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_SUB,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_MUL,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.OFC_DIV,MathCompilerFunctions.Compile_BasicMath },
+				{SCVMInst.JMP,JumpCompilerFunctions.Assemble_JMP },
+				{SCVMInst.JF,JumpCompilerFunctions.Assemble_JF },
+				{SCVMInst.JFF,JumpCompilerFunctions.Assemble_JFF },
+				{SCVMInst.LR,MemoryCompilerFunctions.Compile_BasicLRSR},
+				{SCVMInst.SR,MemoryCompilerFunctions.Compile_BasicLRSR},
+				{SCVMInst.SYSCALL,SysCompilerFunctions.Assemble_SYSCALL},
+				{SCVMInst.RF,SysCompilerFunctions.Assemble_RF},
+				{SCVMInst.CP,MemoryCompilerFunctions.Compile_BasicCP},
 			}
 		};
 	}

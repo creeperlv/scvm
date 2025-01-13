@@ -6,9 +6,9 @@ using scvm.tools.compiler.core.Errors;
 using scvm.tools.compiler.core.utilities;
 using System;
 
-namespace scvm.tools.compiler.core.CompilerFunctions
+namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 {
-	public static class FirstPassJumpCompilerFunctions
+	public static class JumpCompilerFunctions
 	{
 		public unsafe static bool Assemble_JMP(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
@@ -175,15 +175,16 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 					IInstruction.IsIntermediate = true;
 				}
 			}
-
-			if (DataConversion.TryParseInt(CurrentDefinition, TargetFlag.content, result, out var V))
 			{
-				InstPtr.Set(V, 7);
-			}
-			else
-			{
-				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(ValueSeg.content, 0));
-				IInstruction.IsIntermediate = true;
+				if (DataConversion.TryParseInt(CurrentDefinition, TargetFlag.content, result, out var V))
+				{
+					InstPtr.Set(V, 7);
+				}
+				else
+				{
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(ValueSeg.content, 1));
+					IInstruction.IsIntermediate = true;
+				}
 			}
 			return true;
 		}

@@ -6,9 +6,9 @@ using scvm.tools.compiler.core.Errors;
 using scvm.tools.compiler.core.utilities;
 using System;
 
-namespace scvm.tools.compiler.core.CompilerFunctions
+namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 {
-	public static class FirstPassSysCompilerFunctions
+	public static class SysCompilerFunctions
 	{
 		public unsafe static bool Assemble_SYSCALL(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
