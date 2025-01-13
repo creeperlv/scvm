@@ -20,4 +20,14 @@ namespace scvm.core
 		public bool IsInjected;
 		public int FuncID;
 	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct BoolByte
+	{
+		public byte Value;
+		public bool this[int index]
+		{
+			get => ((Value >> index) & 1) == 1;
+			set => Value = (byte)(value ? (Value | (1 << index)) : (((Value | (1 << index)) ^ (1 << index))));
+		}
+	}
 }
