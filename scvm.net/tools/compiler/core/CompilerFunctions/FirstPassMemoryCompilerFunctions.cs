@@ -90,6 +90,68 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 			InstPtr.Set(IsRegister, 2);
 			return true;
 		}
+		public unsafe static bool Compile_BasicCP(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
+		{
+			switch (instID)
+			{
+				case SCVMInst.CP:
+					break;
+				default:
+					return false;
+			}
+			Instruction instruction = default;
+			SourcePosition sourcePosition = IInstruction.sourcePosition;
+			IntPtr InstPtr = (IntPtr)(&instruction);
+			InstPtr.Set(instID);
+			SegmentTraveler st = new SegmentTraveler(s);
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			var current = st.Current;
+			var T = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var L = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var R = current;
+			byte _T;
+			byte _L;
+			byte _R;
+			if (!DataConversion.TryParseRegister(CurrentDefinition, T.content, result, out _T))
+			{
+				//result.AddError(new TypeMismatchError(T, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+				//return false;
 
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(T.content, 0));
+				IInstruction.IsIntermediate = true;
+			}
+			if (!DataConversion.TryParseRegister(CurrentDefinition, L.content, result, out _L))
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(L.content, 1));
+				IInstruction.IsIntermediate = true;
+			}
+
+			if (!DataConversion.TryParseRegister(CurrentDefinition, R.content, result, out _R))
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(R.content, 2));
+				IInstruction.IsIntermediate = true;
+			}
+			InstPtr.Set(_T, 2);
+			InstPtr.Set(_L, 3);
+			InstPtr.Set(_R, 4);
+			IInstruction.Instruction = instruction;
+			return true;
+		}
 	}
 }

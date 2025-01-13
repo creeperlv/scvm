@@ -93,7 +93,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 
 				if (!DataConversion.TryParseRegister(CurrentDefinition, R.content, result, out _R))
 				{
-					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(R.content, 2));
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(R.content, 3));
 					IInstruction.IsIntermediate = true;
 				}
 				InstPtr.Set(_R, 5);

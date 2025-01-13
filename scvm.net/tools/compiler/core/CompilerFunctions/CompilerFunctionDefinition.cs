@@ -35,6 +35,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				{SCVMInst.SR,FirstPassMemoryCompilerFunctions.Compile_BasicLRSR},
 				{SCVMInst.SYSCALL,FirstPassSysCompilerFunctions.Assemble_SYSCALL},
 				{SCVMInst.RF,FirstPassSysCompilerFunctions.Assemble_RF},
+				{SCVMInst.CP,FirstPassMemoryCompilerFunctions.Compile_BasicCP},
 			}
 		};
 	}
