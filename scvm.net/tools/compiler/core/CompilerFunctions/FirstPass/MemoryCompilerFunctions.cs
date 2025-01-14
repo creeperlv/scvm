@@ -46,14 +46,9 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 			}
 			current = st.Current;
 			var Length = current;
-			if (!st.GoNext())
-			{
-				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
-				return false;
-			}
 
 			byte IsRegister = 0;
-			if (!DataConversion.TryParseRegister(CurrentDefinition, Register.content, result, out var IRegister))
+			if (DataConversion.TryParseRegister(CurrentDefinition, Register.content, result, out var IRegister))
 			{
 
 				InstPtr.Set(IRegister, 3);
@@ -63,7 +58,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Register.content, 0));
 				IInstruction.IsIntermediate = true;
 			}
-			if (!DataConversion.TryParseRegister(CurrentDefinition, Ptr.content, result, out var IPtr))
+			if (DataConversion.TryParseRegister(CurrentDefinition, Ptr.content, result, out var IPtr))
 			{
 				InstPtr.Set(IPtr, 4);
 			}
@@ -72,7 +67,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Ptr.content, 1));
 				IInstruction.IsIntermediate = true;
 			}
-			if (!DataConversion.TryParseRegister(CurrentDefinition, Length.content, result, out var RLen))
+			if (DataConversion.TryParseRegister(CurrentDefinition, Length.content, result, out var RLen))
 			{
 				IsRegister = 1;
 				InstPtr.Set(RLen, 5);
@@ -87,6 +82,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(Ptr.content, 1));
 				IInstruction.IsIntermediate = true;
 			}
+			IInstruction.Instruction=instruction;
 			InstPtr.Set(IsRegister, 2);
 			return true;
 		}

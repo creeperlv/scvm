@@ -10,6 +10,17 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 {
 	public static class SysCompilerFunctions
 	{
+		public unsafe static bool Assemble_NOP(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
+		{
+			if (instID != SCVMInst.NOP)
+			{
+				return false;
+			}
+			Instruction inst = default;
+			IntPtr InstPtr = (IntPtr)(&inst);
+			InstPtr.Set(instID, 0);
+			return true;
+		}
 		public unsafe static bool Assemble_SYSCALL(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
 			if (instID != SCVMInst.SYSCALL)
@@ -68,6 +79,7 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 			SegmentTraveler st = new SegmentTraveler(s);
 			var sPos = IInstruction.sourcePosition;
 			Instruction inst = default;
+			IInstruction.Instruction=inst;
 			IntPtr InstPtr = (IntPtr)(&inst);
 			if (!st.GoNext())
 			{
