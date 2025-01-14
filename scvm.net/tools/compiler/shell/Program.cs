@@ -21,6 +21,7 @@ public class Program
 		}
 		arguments.TryGet("output", out var OutputFolder);
 		OutputFolder ??= "./";
+		Console.WriteLine("output=" + OutputFolder);
 		Compiler compiler = new Compiler();
 		ISADefinition definition = DefaultISADefinition.Default;
 		foreach (var file in arguments.SingleStringArgument)
@@ -39,6 +40,11 @@ public class Program
 					{
 						Console.WriteLine(item.ToString());
 					}
+				}
+				if (OutputFolder == "/dev/stdout")
+				{
+					Console.Write(JsonConvert.SerializeObject(result.Result, Formatting.Indented));
+					continue;
 				}
 				var outputFile = Path.Combine(OutputFolder, file + ".obj");
 				if (File.Exists(outputFile))

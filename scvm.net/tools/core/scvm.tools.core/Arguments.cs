@@ -88,15 +88,19 @@ namespace scvm.tools.core
 					if (definition.HasValues)
 					{
 						i++;
-						if (i >= arg.Length)
+
+						if (i >= args.Length)
 						{
+
 							arguments.Add(definition.id, null);
 							continue;
 						}
-						var next = args[i + 1];
-						if (TryFindDefinition(arg, out _))
+						var next = args[i];
+
+						if (TryFindDefinition(next, out _))
 						{
 							arguments.Add(definition.id, null);
+							i--;
 						}
 						else
 						{
