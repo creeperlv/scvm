@@ -114,6 +114,20 @@ namespace scvm.core
 						}
 					}
 					break;
+				case SCVMInst.CP:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);
+						var sReg = InstAlt.D0;
+						var tReg = InstAlt.D1;
+						var lReg = InstAlt.D2;
+						var sPtr = Register.GetData<ulong>(sReg);
+						var tPtr = Register.GetData<ulong>(tReg);
+						var len = Register.GetData<int>(lReg);
+						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.PageTable, this.ThisProcessorID, len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.PageTable, this.ThisProcessorID, len);
+						Buffer.MemoryCopy(src,ptr,len,len);
+					}
+					break;
 				case SCVMInst.LR:
 					{
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);
