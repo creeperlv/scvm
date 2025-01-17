@@ -20,12 +20,8 @@ namespace scvm.core
 	{
 		public const int InterruptMaxCount = 0xFFFF;
 		public int ThisProcessorID;
-		public SCVMMachineStat MStat;
-		public ulong PageTable;
-		public ulong PC;
-		public uint Timer;
+		public ProcessorState state;
 		public SCVMCPU ParentCPU;
-		public SCVMRegister Register;
 		public FullInterruptConfig* SWInterrupts;
 		public FullInterruptConfig* HWInterrupts;
 		public Dictionary<int, InterruptHandler> HWInterruptHandlers = new Dictionary<int, InterruptHandler>();
@@ -34,12 +30,12 @@ namespace scvm.core
 		{
 			SWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
 			HWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
-			Register.InitRegisters();
+			state.Register.InitRegisters();
 		}
 
 		public void Dispose()
 		{
-			Register.Dispose();
+			state.Register.Dispose();
 			free(SWInterrupts);
 			free(HWInterrupts);
 		}
@@ -64,29 +60,29 @@ namespace scvm.core
 		}
 		public unsafe void Execute()
 		{
-			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)PC, PageTable, ThisProcessorID, sizeof(Instruction));
+			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
 			Instruction instruction = ((Instruction*)inst)[0];
 			var Op = instruction.CastAs<Instruction, ushort>();
 			switch (Op)
 			{
 				case SCVMInst.ADD:
 					{
-						SCVMMathFunctions.MathAdd(Register, instruction);
+						SCVMMathFunctions.MathAdd(state.Register, instruction);
 					}
 					break;
 				case SCVMInst.SUB:
 					{
-						SCVMMathFunctions.MathSub(Register, instruction);
+						SCVMMathFunctions.MathSub(state.Register, instruction);
 					}
 					break;
 				case SCVMInst.MUL:
 					{
-						SCVMMathFunctions.MathMul(Register, instruction);
+						SCVMMathFunctions.MathMul(state.Register, instruction);
 					}
 					break;
 				case SCVMInst.DIV:
 					{
-						SCVMMathFunctions.MathDiv(Register, instruction);
+						SCVMMathFunctions.MathDiv(state.Register, instruction);
 					}
 					break;
 				case SCVMInst.JMP:
@@ -94,22 +90,22 @@ namespace scvm.core
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
 						if (InstAlt.D1 == 1)
 						{
-							var offset = Register.GetData<int>(InstAlt.D2.CastAs<uint, int>(0));
+							var offset = state.Register.GetData<int>(InstAlt.D2.CastAs<uint, int>(0));
 							if (offset > 0)
-								PC += (uint)offset;
+								state.PC += (uint)offset;
 							else
 							{
-								PC -= (uint)(-offset);
+								state.PC -= (uint)(-offset);
 							}
 						}
 						else
 						{
 							var offset = InstAlt.D2.CastAs<uint, int>(0);
 							if (offset > 0)
-								PC += (uint)offset;
+								state.PC += (uint)offset;
 							else
 							{
-								PC -= (uint)(-offset);
+								state.PC -= (uint)(-offset);
 							}
 						}
 					}
@@ -120,11 +116,11 @@ namespace scvm.core
 						var sReg = InstAlt.D0;
 						var tReg = InstAlt.D1;
 						var lReg = InstAlt.D2;
-						var sPtr = Register.GetData<ulong>(sReg);
-						var tPtr = Register.GetData<ulong>(tReg);
-						var len = Register.GetData<int>(lReg);
-						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.PageTable, this.ThisProcessorID, len);
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.PageTable, this.ThisProcessorID, len);
+						var sPtr = state.Register.GetData<ulong>(sReg);
+						var tPtr = state.Register.GetData<ulong>(tReg);
+						var len = state.Register.GetData<int>(lReg);
+						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
 						Buffer.MemoryCopy(src,ptr,len,len);
 					}
 					break;
@@ -134,7 +130,7 @@ namespace scvm.core
 						var IsReg = InstAlt.D0;
 						var TargetReg = InstAlt.D1;
 						var PointerRegister = InstAlt.D2;
-						var Ptr = Register.GetData<ulong>(PointerRegister);
+						var Ptr = state.Register.GetData<ulong>(PointerRegister);
 						byte Len = 0;
 						var Length = InstAlt.D3;
 						if (IsReg == 0)
@@ -143,10 +139,10 @@ namespace scvm.core
 						}
 						else
 						{
-							Len = Register.GetData<byte>(Length);
+							Len = state.Register.GetData<byte>(Length);
 						}
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.PageTable, this.ThisProcessorID, Len);
-						Register.CopyFrom(TargetReg, ptr, Len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						state.Register.CopyFrom(TargetReg, ptr, Len);
 
 
 					}
@@ -157,7 +153,7 @@ namespace scvm.core
 						var IsReg = InstAlt.D0;
 						var TargetReg = InstAlt.D1;
 						var PointerRegister = InstAlt.D2;
-						var Ptr = Register.GetData<ulong>(PointerRegister);
+						var Ptr = state.Register.GetData<ulong>(PointerRegister);
 						byte Len = 0;
 						var Length = InstAlt.D3;
 						if (IsReg == 0)
@@ -166,10 +162,10 @@ namespace scvm.core
 						}
 						else
 						{
-							Len = Register.GetData<byte>(Length);
+							Len = state.Register.GetData<byte>(Length);
 						}
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.PageTable, this.ThisProcessorID, Len);
-						Register.CopyTo(TargetReg, ptr, Len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						state.Register.CopyTo(TargetReg, ptr, Len);
 					}
 					break;
 				case SCVMInst.SYSCALL:
