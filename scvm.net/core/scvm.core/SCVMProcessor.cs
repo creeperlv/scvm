@@ -2,6 +2,7 @@
 using scvm.core.utilities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using static scvm.core.libNative.stdlib;
 namespace scvm.core
@@ -58,7 +59,7 @@ namespace scvm.core
 					break;
 			}
 		}
-		public unsafe void Execute()
+		public unsafe void Execute(bool willAdvancePC = true)
 		{
 			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
 			Instruction instruction = ((Instruction*)inst)[0];
@@ -121,7 +122,7 @@ namespace scvm.core
 						var len = state.Register.GetData<int>(lReg);
 						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
 						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
-						Buffer.MemoryCopy(src,ptr,len,len);
+						Buffer.MemoryCopy(src, ptr, len, len);
 					}
 					break;
 				case SCVMInst.LR:
@@ -211,9 +212,17 @@ namespace scvm.core
 						}
 					}
 					break;
+				case SCVMInst.NOP:
+					break;
 				default:
 					break;
 			}
+			if (willAdvancePC) AdvancePC();
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void AdvancePC()
+		{
+			this.state.PC += 1;
 		}
 	}
 }
