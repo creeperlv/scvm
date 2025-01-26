@@ -1,4 +1,5 @@
-﻿using System;
+﻿using scvm.core.dispatchers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,7 @@ namespace scvm.core
 		public IMemoryManagementUnit MMU;
 		public SCVMCPU CPU;
 		public MachineWrokMode WrokMode = MachineWrokMode.DisposeOnDoneExecution;
+		public IDispatcher Dispatcher;
 		public byte* UnknownInterrupt(int Processor, InterruptType InterruptType, ushort InterruptID)
 		{
 			return null;

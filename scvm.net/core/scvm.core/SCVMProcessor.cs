@@ -27,6 +27,7 @@ namespace scvm.core
 		public FullInterruptConfig* HWInterrupts;
 		public Dictionary<int, InterruptHandler> HWInterruptHandlers = new Dictionary<int, InterruptHandler>();
 		public Dictionary<int, InterruptHandler> SWInterruptHandlers = new Dictionary<int, InterruptHandler>();
+		public Action OnHaltCalled = null;
 		public SCVMProcessor()
 		{
 			SWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
@@ -213,6 +214,9 @@ namespace scvm.core
 					}
 					break;
 				case SCVMInst.NOP:
+					break;
+				case SCVMInst.HALT:
+					OnHaltCalled?.Invoke();
 					break;
 				default:
 					break;

@@ -121,6 +121,8 @@ namespace scvm.core
 		//Map Memory for read
 		//IMAP $reg $length
 		public const ushort IMAP = 0x003B;
+		//Put the machine into halt state (Or call OnHalt callback in VM.)
+		public const ushort HALT = 0xF100;
 
 	}
 }
