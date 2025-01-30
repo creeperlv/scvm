@@ -28,6 +28,8 @@ namespace scvm.core
 		public Dictionary<int, InterruptHandler> HWInterruptHandlers = new Dictionary<int, InterruptHandler>();
 		public Dictionary<int, InterruptHandler> SWInterruptHandlers = new Dictionary<int, InterruptHandler>();
 		public Action OnHaltCalled = null;
+		bool isDisposed = false;
+		public bool IsDisposed() => isDisposed;
 		public SCVMProcessor()
 		{
 			SWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
@@ -40,6 +42,7 @@ namespace scvm.core
 			state.Register.Dispose();
 			free(SWInterrupts);
 			free(HWInterrupts);
+			isDisposed = true;
 		}
 
 		void InternalSyscall()

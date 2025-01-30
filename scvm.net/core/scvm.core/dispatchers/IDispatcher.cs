@@ -4,12 +4,13 @@ using System.Text;
 
 namespace scvm.core.dispatchers
 {
-	public interface IDispatcher
+	public interface IDispatcher: IDisposable
 	{
 		void AttachMachine(SCVMMachine machine);
 		void StartExecute();
 		void StartExecute(int ProcessorID);
 		void StartExecute(int ProcessorID, ulong PC);
 		void StartExecute(ulong PC);
+		void StopExecute();
 	}
 }
