@@ -20,6 +20,14 @@ namespace scvm.core
 		public uint D2;
 	}
 	[StructLayout(LayoutKind.Sequential)]
+	public struct Instruction_JFOp
+	{
+		public ushort op;
+		public byte D0;
+		public int D1;
+		public byte D2;
+	}
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Instruction_OpSeparated_ByteSegmented
 	{
 		public ushort op;

@@ -115,6 +115,39 @@ namespace scvm.core
 						}
 					}
 					break;
+				case SCVMInst.JF:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
+						var InstAlt2 = instruction.CastAs<Instruction, Instruction_JFOp>(0);
+						var FlagReg = instruction.CastAsWOffsetBytes<Instruction, byte>(7);
+						var FlagValue = this.state.Register.GetData<byte>(FlagReg);
+						if (FlagValue == 1)
+						{
+
+							if (InstAlt.D0 == 1)
+							{
+								var PCOffsetReg = InstAlt.D1;
+								var offset = this.state.Register.GetData<int>(PCOffsetReg);
+								if (offset > 0)
+									state.PC += (uint)offset;
+								else
+								{
+									state.PC -= (uint)(-offset);
+								}
+							}
+							else
+							{
+								var offset = InstAlt2.D1;
+								if (offset > 0)
+									state.PC += (uint)offset;
+								else
+								{
+									state.PC -= (uint)(-offset);
+								}
+							}
+						}
+					}
+					break;
 				case SCVMInst.CP:
 					{
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);
