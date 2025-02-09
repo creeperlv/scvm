@@ -45,10 +45,6 @@ namespace scvm.core
 			free(HWInterrupts);
 			isDisposed = true;
 		}
-		public void Interrupt(ushort id)
-		{
-
-		}
 		public void SetupSyscall(FullInterruptConfig config, ushort ID, InterruptType Type)
 		{
 			switch (Type)
@@ -63,8 +59,16 @@ namespace scvm.core
 					break;
 			}
 		}
+		bool WillHWInterrupt = false;
+		ushort TargetInterrupt = 0;
 		public unsafe void Execute(bool willAdvancePC = true)
 		{
+			if (WillHWInterrupt)
+			{
+				WillHWInterrupt = false;
+				ExecuteInterrupt(InterruptType.HW, TargetInterrupt);
+				return;
+			}
 			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
 			Instruction instruction = ((Instruction*)inst)[0];
 			var Op = instruction.CastAs<Instruction, ushort>();
@@ -210,60 +214,7 @@ namespace scvm.core
 					{
 						var T = instruction.CastAsWOffsetBytes<Instruction, InterruptType>(2);
 						var id = instruction.CastAsWOffsetBytes<Instruction, ushort>(3);
-						switch (T)
-						{
-							case InterruptType.HW:
-								if (HWInterrupts[id].IsConfigured == false)
-								{
-									this.ParentCPU.Machine.UnknownInterrupt(ThisProcessorID, T, id);
-								}
-								else
-								{
-									if (HWInterrupts[id].IsInjected)
-									{
-										if (HWInterruptHandlers.TryGetValue(id, out var handler))
-										{
-											handler(this);
-										}
-									}
-								}
-								break;
-							case InterruptType.SW:
-								if (SWInterrupts[id].IsConfigured == false)
-								{
-									this.ParentCPU.Machine.UnknownInterrupt(ThisProcessorID, T, id);
-								}
-								else
-								{
-									if (SWInterrupts[id].IsInjected)
-									{
-										if (SWInterruptHandlers.TryGetValue(id, out var handler))
-										{
-											handler(this);
-										}
-									}
-									else
-									{
-										var config = SWInterrupts[id].config;
-										{
-											var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
-											posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
-										}
-										{
-											var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
-											((SCVMMachineStat*)ptr)[0] = this.state.MStat;
-										}
-										this.state.IsInterrupt = true;
-										this.state.InterruptType = T;
-										this.state.InterruptID = id;
-										this.state.PC = config.PC;
-
-									}
-								}
-								break;
-							default:
-								break;
-						}
+						ExecuteInterrupt(T, id);
 					}
 					break;
 				case SCVMInst.NOP:
@@ -276,6 +227,85 @@ namespace scvm.core
 			}
 			if (willAdvancePC) AdvancePC();
 		}
+		public void TryHWInterrupt(ushort id)
+		{
+			WillHWInterrupt = true;
+			this.TargetInterrupt = id;
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ExecuteInterrupt(InterruptType T, ushort id)
+		{
+			switch (T)
+			{
+				case InterruptType.HW:
+					if (HWInterrupts[id].IsConfigured == false)
+					{
+						this.ParentCPU.Machine.UnknownInterrupt(ThisProcessorID, T, id);
+					}
+					else
+					{
+						if (HWInterrupts[id].IsInjected)
+						{
+							if (HWInterruptHandlers.TryGetValue(id, out var handler))
+							{
+								handler(this);
+							}
+						}
+						else
+						{
+							var config = HWInterrupts[id].config;
+							{
+								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
+								posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
+							}
+							{
+								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
+								((SCVMMachineStat*)ptr)[0] = this.state.MStat;
+							}
+							this.state.IsInterrupt = true;
+							this.state.InterruptType = T;
+							this.state.InterruptID = id;
+							this.state.PC = config.PC;
+						}
+					}
+					break;
+				case InterruptType.SW:
+					if (SWInterrupts[id].IsConfigured == false)
+					{
+						this.ParentCPU.Machine.UnknownInterrupt(ThisProcessorID, T, id);
+					}
+					else
+					{
+						if (SWInterrupts[id].IsInjected)
+						{
+							if (SWInterruptHandlers.TryGetValue(id, out var handler))
+							{
+								handler(this);
+							}
+						}
+						else
+						{
+							var config = SWInterrupts[id].config;
+							{
+								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
+								posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
+							}
+							{
+								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
+								((SCVMMachineStat*)ptr)[0] = this.state.MStat;
+							}
+							this.state.IsInterrupt = true;
+							this.state.InterruptType = T;
+							this.state.InterruptID = id;
+							this.state.PC = config.PC;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AdvancePC()
 		{
