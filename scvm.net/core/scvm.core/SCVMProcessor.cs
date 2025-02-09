@@ -1,4 +1,5 @@
 ﻿using scvm.core.functions;
+using scvm.core.libNative;
 using scvm.core.utilities;
 using System;
 using System.Collections.Generic;
@@ -44,8 +45,7 @@ namespace scvm.core
 			free(HWInterrupts);
 			isDisposed = true;
 		}
-
-		void InternalSyscall()
+		public void Interrupt(ushort id)
 		{
 
 		}
@@ -241,6 +241,23 @@ namespace scvm.core
 										{
 											handler(this);
 										}
+									}
+									else
+									{
+										var config = SWInterrupts[id].config;
+										{
+											var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
+											posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
+										}
+										{
+											var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
+											((SCVMMachineStat*)ptr)[0] = this.state.MStat;
+										}
+										this.state.IsInterrupt = true;
+										this.state.InterruptType = T;
+										this.state.InterruptID = id;
+										this.state.PC = config.PC;
+
 									}
 								}
 								break;

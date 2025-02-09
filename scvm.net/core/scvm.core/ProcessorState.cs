@@ -10,6 +10,9 @@ namespace scvm.core
 		public ulong PageTable;
 		public uint Timer;
 		public SCVMRegister Register;
+		public bool IsInterrupt;
+		public InterruptType InterruptType;
+		public ushort InterruptID;
 
 		public void Dispose()
 		{

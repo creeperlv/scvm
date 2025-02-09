@@ -67,13 +67,16 @@ namespace scvm.core
 		public const ushort CMP = 0x0013;
 		//Copy
 		//CP $src_ptr $tgt_ptr $len
-		public const ushort CP = 0x0013;
+		public const ushort CP = 0x0014;
 		//Invoke a syscall/interrupt.
 		//SYSCALL <Value>
-		public const ushort SYSCALL = 0x0014;
+		public const ushort SYSCALL = 0x0015;
+		//System Return
+		//SYSRET $RET
+		public const ushort SYSRET = 0x0016;
 		//Reset Flag
 		//RF FlagID
-		public const ushort RF = 0x0015;
+		public const ushort RF = 0x0017;
 		//System Register Write
 		//SYSREGW <id> $S
 		public const ushort SYSREGW = 0xF000;

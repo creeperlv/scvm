@@ -7,10 +7,12 @@ namespace scvm.core
 	{
 		public byte ReturnValueRegister;
 		public byte ReturnValueLength;
-		public long PC;
-		public long RegisterStore;
-		public long MStat;
-		public long PT;
+		public ulong PC;
+		//Where to store register.
+		public ulong RegisterStore;
+		//Where to store machine state
+		public ulong MStat;
+		public ulong PT;
 	}
 	[StructLayout(LayoutKind.Sequential)]
 	public unsafe struct FullInterruptConfig
@@ -18,7 +20,6 @@ namespace scvm.core
 		public bool IsConfigured;
 		public InterruptConfig config;
 		public bool IsInjected;
-		public int FuncID;
 	}
 	[StructLayout(LayoutKind.Sequential)]
 	public struct BoolByte

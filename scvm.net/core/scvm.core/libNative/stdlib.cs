@@ -3,6 +3,14 @@ using System.Runtime.InteropServices;
 
 namespace scvm.core.libNative
 {
+	public unsafe static class posix_string
+	{
+		public static unsafe void* memcpy(void* dest_str, void* src_str, uint n)
+		{
+			Buffer.MemoryCopy(src_str,dest_str,n,n);
+			return dest_str;
+		}
+	}
 	public unsafe static class stdlib
 	{
 		public static void* malloc(uint size)
