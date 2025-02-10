@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/creeperlv/scvm</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/creeperlv/scvm</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.1.0.0-deev</Version>
   </PropertyGroup>
 
   <ItemGroup>
