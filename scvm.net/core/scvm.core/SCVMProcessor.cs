@@ -152,6 +152,35 @@ namespace scvm.core
 						}
 					}
 					break;
+				case SCVMInst.CMP:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);
+						var OP = (SCVMCmpOps)InstAlt.D0;
+						switch (OP)
+						{
+							case SCVMCmpOps.LT:
+								SCVMCompareFunctions.LT(state.Register, InstAlt);
+								break;
+							case SCVMCmpOps.GT:
+								SCVMCompareFunctions.GT(state.Register, InstAlt);
+								break;
+							case SCVMCmpOps.GE:
+								SCVMCompareFunctions.GE(state.Register, InstAlt);
+								break;
+							case SCVMCmpOps.EQ:
+								SCVMCompareFunctions.EQ(state.Register, InstAlt);
+								break;
+							case SCVMCmpOps.LE:
+								SCVMCompareFunctions.LE(state.Register, InstAlt);
+								break;
+							case SCVMCmpOps.NE:
+								SCVMCompareFunctions.NE(state.Register, InstAlt);
+								break;
+							default:
+								break;
+						}
+					}
+					break;
 				case SCVMInst.CP:
 					{
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>(0);

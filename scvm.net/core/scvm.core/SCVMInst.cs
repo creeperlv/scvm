@@ -128,4 +128,8 @@ namespace scvm.core
 		public const ushort HALT = 0xF100;
 
 	}
+	public enum SCVMCmpOps : byte
+	{
+		LT = 0, GT = 1, GE = 2, EQ = 3, LE = 4, NE = 5,
+	}
 }

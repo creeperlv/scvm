@@ -24,6 +24,18 @@ namespace scvm.core.data
 		SCVMSimpleResult<T> DivOF(T R);
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		SCVMSimpleResult<T> MulOF(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool LT(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool GT(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool LE(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool GE(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool EQ(T R);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		bool NE(T R);
 	}
 	public struct SCVMSimpleResult<T> where T : unmanaged
 	{

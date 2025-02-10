@@ -117,6 +117,36 @@ namespace scvm.core.data
 			}
 			return new SCVMSimpleResult<CompactSByte>(IsOF, result);
 		}
+
+		public bool LT(CompactSByte R)
+		{
+			return this.Value < R.Value;
+		}
+
+		public bool GT(CompactSByte R)
+		{
+			return this.Value > R.Value;
+		}
+
+		public bool LE(CompactSByte R)
+		{
+			return this.Value <= R.Value;
+		}
+
+		public bool GE(CompactSByte R)
+		{
+			return this.Value >= R.Value;
+		}
+
+		public bool EQ(CompactSByte R)
+		{
+			return this.Value == R.Value;
+		}
+
+		public bool NE(CompactSByte R)
+		{
+			return this.Value != R.Value;
+		}
 	}
 
 }

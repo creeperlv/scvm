@@ -117,6 +117,36 @@ namespace scvm.core.data
 			}
 			return new SCVMSimpleResult<CompactDouble>(IsOF, result);
 		}
+
+		public bool LT(CompactDouble R)
+		{
+			return this.Value < R.Value;
+		}
+
+		public bool GT(CompactDouble R)
+		{
+			return this.Value > R.Value;
+		}
+
+		public bool LE(CompactDouble R)
+		{
+			return this.Value <= R.Value;
+		}
+
+		public bool GE(CompactDouble R)
+		{
+			return this.Value >= R.Value;
+		}
+
+		public bool EQ(CompactDouble R)
+		{
+			return this.Value == R.Value;
+		}
+
+		public bool NE(CompactDouble R)
+		{
+			return this.Value != R.Value;
+		}
 	}
 
 }
