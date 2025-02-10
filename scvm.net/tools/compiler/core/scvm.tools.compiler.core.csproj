@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\scvm.core\scvm.core.csproj" />
+    <ProjectReference Include="..\..\..\core\Runtime\scvm.core\scvm.core.csproj" />
     <ProjectReference Include="..\..\core\scvm.tools.core\scvm.tools.core.csproj" />
   </ItemGroup>
 

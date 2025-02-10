@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\scvm.core\scvm.core.csproj" />
+    <ProjectReference Include="..\..\..\core\Runtime\scvm.core\scvm.core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

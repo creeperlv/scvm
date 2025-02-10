@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{D7DEF76F-B490-4A91-964B-E5B31D5849CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scvm.core", "core\scvm.core\scvm.core.csproj", "{8467C9CC-3101-4FA8-913D-3CC149B61F04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scvm.core", "core\Runtime\scvm.core\scvm.core.csproj", "{8467C9CC-3101-4FA8-913D-3CC149B61F04}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{EC5EDFF0-C69E-40C5-A482-82E413FDF6E9}"
 EndProject
