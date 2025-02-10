@@ -67,7 +67,6 @@ namespace scvm.core
 			{
 				WillHWInterrupt = false;
 				ExecuteInterrupt(InterruptType.HW, TargetInterrupt);
-				return;
 			}
 			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
 			Instruction instruction = ((Instruction*)inst)[0];
@@ -256,6 +255,7 @@ namespace scvm.core
 			}
 			if (willAdvancePC) AdvancePC();
 		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void TryHWInterrupt(ushort id)
 		{
 			WillHWInterrupt = true;

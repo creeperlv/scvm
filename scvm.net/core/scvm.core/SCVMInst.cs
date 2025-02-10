@@ -69,7 +69,7 @@ namespace scvm.core
 		//CP $src_ptr $tgt_ptr $len
 		public const ushort CP = 0x0014;
 		//Invoke a syscall/interrupt.
-		//SYSCALL <Value>
+		//SYSCALL <Type> <Value>
 		public const ushort SYSCALL = 0x0015;
 		//System Return
 		//SYSRET $RET
