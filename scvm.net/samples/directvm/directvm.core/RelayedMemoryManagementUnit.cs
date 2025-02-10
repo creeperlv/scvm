@@ -27,11 +27,24 @@ public unsafe class RelayedMemoryManagementUnit : IMemoryManagementUnit
 			var block = blocks[MemoryCount];
 			block.ptr = (byte*)StdLib.malloc(size);
 			block.IsAllocated = true;
-			block.size=size;
+			block.size = size;
 		}
 		MemoryCount++;
 		return MemoryCount - 1;
 	}
+
+	public void Dispose()
+	{
+		for (int i = 0; i < MemoryCount; i++)
+		{
+			if (blocks[i].IsAllocated)
+			{
+				StdLib.free((IntPtr)blocks[i].ptr);
+			}
+		}
+		StdLib.free((IntPtr)blocks);
+	}
+
 	public byte* GetPtr(ulong ptr, ulong PageTable, int CallerCPU, int AssumedAccessSize)
 	{
 		var BlockID = ptr.CastAs<ulong, uint>(0);
