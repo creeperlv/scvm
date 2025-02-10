@@ -5,8 +5,7 @@
   "author": {
     "name": "Creeper Lv"
   },
-  "dependencies": {
-  },
-  "displayName": "SCVM.Net",
-  "description": "An simple common virtual machine."
+  "displayName": "SCVM",
+  "description": "An simple common virtual machine.",
+  "unity": "2021.3"
 }

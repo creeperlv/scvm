@@ -1,5 +1,5 @@
 {
-    "name": "lib.creeperlv.scvm",
+    "name": "scvm.core",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
