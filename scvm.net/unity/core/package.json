@@ -1,0 +1,12 @@
+{
+  "name": "io.creeperlv.scvm",
+  "version": "1.0.0-dev",
+  "license": "MIT",
+  "author": {
+    "name": "Creeper Lv"
+  },
+  "dependencies": {
+  },
+  "displayName": "SCVM.Net",
+  "description": "An simple common virtual machine."
+}
