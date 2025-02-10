@@ -128,6 +128,13 @@ namespace scvm.core
 		public const ushort HALT = 0xF100;
 
 	}
+	public static class SCVMBasicHardwareInterruptTable
+	{
+		public const ushort DivError = 0x0000;
+		public const ushort Debug = 0x0001;
+		public const ushort PageFault = 0x0002;
+		public const ushort InvOpC = 0x0003;
+	}
 	public enum SCVMCmpOps : byte
 	{
 		LT = 0, GT = 1, GE = 2, EQ = 3, LE = 4, NE = 5,

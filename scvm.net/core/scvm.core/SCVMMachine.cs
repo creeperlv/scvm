@@ -5,6 +5,12 @@ using System.Text;
 
 namespace scvm.core
 {
+	public class SCVMCallingConvention
+	{
+		public const int Function_Parameter64_0=10;
+		public const int Function_Parameter64_1=11;
+		public const int Function_Parameter64_2=12;
+	}
 	public unsafe class SCVMMachine : IDisposable
 	{
 		public IMemoryManagementUnit MMU;
@@ -15,9 +21,10 @@ namespace scvm.core
 		{
 			return null;
 		}
-		public byte* SegFault(int CPU, ulong Address)
+		public void SegFault(int CPU, ulong Address)
 		{
-			return null;
+			((ulong*)this.CPU.Processors[CPU].state.Register.Registers)[SCVMCallingConvention.Function_Parameter64_2] = Address;
+			this.CPU.Processors[CPU].TryHWInterrupt(SCVMBasicHardwareInterruptTable.PageFault);
 		}
 		public void InvalidInstruction(int CPU, Instruction instruction) { }
 

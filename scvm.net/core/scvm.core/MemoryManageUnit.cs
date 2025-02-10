@@ -18,6 +18,7 @@ namespace scvm.core
 				if (!IsHit)
 				{
 					machine.SegFault(CallerProcessor, ptr);
+					return null;
 				}
 				return address;
 			}
@@ -27,11 +28,13 @@ namespace scvm.core
 				if (!IsHit)
 				{
 					machine.SegFault(CallerProcessor, ptr);
+					return null;
 				}
 				var address = GetFromPhysicalAddress(__ptr, &IsHit);
 				if (!IsHit)
 				{
 					machine.SegFault(CallerProcessor, __ptr);
+					return null;
 				}
 				return address;
 			}

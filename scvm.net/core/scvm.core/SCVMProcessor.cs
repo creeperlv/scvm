@@ -60,15 +60,33 @@ namespace scvm.core
 			}
 		}
 		bool WillHWInterrupt = false;
+		InterruptType InterruptType = InterruptType.HW;
 		ushort TargetInterrupt = 0;
 		public unsafe void Execute(bool willAdvancePC = true)
 		{
 			if (WillHWInterrupt)
 			{
 				WillHWInterrupt = false;
-				ExecuteInterrupt(InterruptType.HW, TargetInterrupt);
+
+				switch (InterruptType)
+				{
+					case InterruptType.HW:
+						ExecuteInterrupt(InterruptType.HW, TargetInterrupt);
+						break;
+					case InterruptType.SW:
+						ExecuteInterrupt(InterruptType.SW, TargetInterrupt);
+						break;
+					default:
+						break;
+				}
+
 			}
 			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
+
+			if (inst == null)
+			{
+				return;
+			}
 			Instruction instruction = ((Instruction*)inst)[0];
 			var Op = instruction.CastAs<Instruction, ushort>();
 			switch (Op)
@@ -190,7 +208,15 @@ namespace scvm.core
 						var tPtr = state.Register.GetData<ulong>(tReg);
 						var len = state.Register.GetData<int>(lReg);
 						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
+						if (src == null)
+						{
+							return;
+						}
 						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
+						if (ptr == null)
+						{
+							return;
+						}
 						Buffer.MemoryCopy(src, ptr, len, len);
 					}
 					break;
@@ -212,6 +238,10 @@ namespace scvm.core
 							Len = state.Register.GetData<byte>(Length);
 						}
 						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						if (ptr == null)
+						{
+							return;
+						}
 						state.Register.CopyFrom(TargetReg, ptr, Len);
 
 
@@ -235,6 +265,10 @@ namespace scvm.core
 							Len = state.Register.GetData<byte>(Length);
 						}
 						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						if (ptr == null)
+						{
+							return;
+						}
 						state.Register.CopyTo(TargetReg, ptr, Len);
 					}
 					break;
@@ -259,6 +293,14 @@ namespace scvm.core
 		public void TryHWInterrupt(ushort id)
 		{
 			WillHWInterrupt = true;
+			InterruptType = InterruptType.HW;
+			this.TargetInterrupt = id;
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void TrySWInterrupt(ushort id)
+		{
+			WillHWInterrupt = true;
+			InterruptType = InterruptType.SW;
 			this.TargetInterrupt = id;
 		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -285,10 +327,18 @@ namespace scvm.core
 							var config = HWInterrupts[id].config;
 							{
 								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
+								if (ptr == null)
+								{
+									return;
+								}
 								posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
 							}
 							{
 								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
+								if (ptr == null)
+								{
+									return;
+								}
 								((SCVMMachineStat*)ptr)[0] = this.state.MStat;
 							}
 							this.state.IsInterrupt = true;
@@ -317,10 +367,18 @@ namespace scvm.core
 							var config = SWInterrupts[id].config;
 							{
 								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.RegisterStore, config.PT, this.ThisProcessorID, SCVMRegister.RegisterSize);
+								if (ptr == null)
+								{
+									return;
+								}
 								posix_string.memcpy(ptr, state.Register.Registers, SCVMRegister.RegisterSize);
 							}
 							{
 								var ptr = this.ParentCPU.Machine.MMU.GetPtr(config.MStat, config.PT, this.ThisProcessorID, sizeof(SCVMMachineStat));
+								if (ptr == null)
+								{
+									return;
+								}
 								((SCVMMachineStat*)ptr)[0] = this.state.MStat;
 							}
 							this.state.IsInterrupt = true;
