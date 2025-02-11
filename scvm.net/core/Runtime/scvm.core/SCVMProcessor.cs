@@ -26,8 +26,8 @@ namespace scvm.core
 		public SCVMCPU ParentCPU;
 		public FullInterruptConfig* SWInterrupts;
 		public FullInterruptConfig* HWInterrupts;
-		public Dictionary<int, InterruptHandler> HWInterruptHandlers = new Dictionary<int, InterruptHandler>();
-		public Dictionary<int, InterruptHandler> SWInterruptHandlers = new Dictionary<int, InterruptHandler>();
+		public Dictionary<ushort, InterruptHandler> HWInterruptHandlers = new Dictionary<ushort, InterruptHandler>();
+		public Dictionary<ushort, InterruptHandler> SWInterruptHandlers = new Dictionary<ushort, InterruptHandler>();
 		public Action OnHaltCalled = null;
 		bool isDisposed = false;
 		public bool IsDisposed() => isDisposed;
@@ -54,6 +54,27 @@ namespace scvm.core
 					break;
 				case InterruptType.SW:
 					SWInterrupts[ID] = config;
+					break;
+				default:
+					break;
+			}
+		}
+		public void SetInterruptHandler(ushort ID, InterruptType Type,InterruptHandler handler)
+		{
+			switch (Type)
+			{
+				case InterruptType.HW:
+					if (HWInterruptHandlers.ContainsKey(ID))
+					{
+						HWInterruptHandlers[ID]=handler;
+					}else HWInterruptHandlers.Add(ID, handler);
+					break;
+				case InterruptType.SW:
+					if (SWInterruptHandlers.ContainsKey(ID))
+					{
+						SWInterruptHandlers[ID] = handler;
+					}
+					else HWInterruptHandlers.Add(ID, handler);
 					break;
 				default:
 					break;

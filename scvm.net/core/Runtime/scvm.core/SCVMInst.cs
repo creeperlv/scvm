@@ -38,7 +38,7 @@ namespace scvm.core
 		//SET $T [VALUE]
 		//Assembly: Set $reg <type> <value>
 		public const ushort SET = 0x0005;
-		//CVT $L $R $T <Type>
+		//CVT $L $T <SourceType> <TargetType>
 		public const ushort CVT = 0x0006;
 		//Single Calc:
 		//SCALC $S $T <OP>

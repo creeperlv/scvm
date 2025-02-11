@@ -101,6 +101,90 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 			IInstruction.Instruction = instruction;
 			return true;
 		}
+		public unsafe static bool Compile_Convert(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
+		{
+			switch (instID)
+			{
+				case SCVMInst.CVT:
+					break;
+				default:
+					return false;
+			}
+			Instruction instruction = default;
+			SourcePosition sourcePosition = IInstruction.sourcePosition;
+			IntPtr InstPtr = (IntPtr)(&instruction);
+			InstPtr.Set(instID);
+			SegmentTraveler st = new SegmentTraveler(s);
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			var current = st.Current;
+			var L = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var T = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var SrcType = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var DestType = current;
+			byte _T;
+			byte _L;
+			if (!DataConversion.TryParseRegister(CurrentDefinition, T.content, result, out _T))
+			{
+				//result.AddError(new TypeMismatchError(T, sourcePosition, CurrentDefinition.NativeTypes.ReverseQuery(NativeType.R)));
+				//return false;
+
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(T.content, 1));
+				IInstruction.IsIntermediate = true;
+			}
+			if (!DataConversion.TryParseRegister(CurrentDefinition, L.content, result, out _L))
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(L.content, 0));
+				IInstruction.IsIntermediate = true;
+			}
+			InstPtr.Set(_L, 2);
+			InstPtr.Set(_T, 3);
+			{
+				if (CurrentDefinition.NativeTypes.TryGetValue(SrcType.content.ToLower(), out var type))
+				{
+					InstPtr.Set(type, 4);
+				}
+				else
+				{
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(current.content, 2));
+					IInstruction.IsIntermediate = true;
+				}
+			}
+			{
+				if (CurrentDefinition.NativeTypes.TryGetValue(DestType.content.ToLower(), out var type))
+				{
+					InstPtr.Set(type, 5);
+				}
+				else
+				{
+					IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(current.content, 3));
+					IInstruction.IsIntermediate = true;
+				}
+			}
+			IInstruction.Instruction = instruction;
+			return true;
+		}
 
 	}
 }
