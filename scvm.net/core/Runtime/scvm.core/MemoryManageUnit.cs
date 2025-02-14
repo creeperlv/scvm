@@ -8,9 +8,11 @@ namespace scvm.core
 	{
 		public List<Memory> Memories;
 		public SCVMMachine machine;
+		ulong PageTableOffset;
+		ulong PageTableSize;
 		public byte* GetPtr(ulong ptr, ulong PageTable, int CallerProcessor, int AssumedAccessSize)
 		{
-			var table = GetTable(PageTable);
+			var table = GetTable(CallerProcessor, PageTable);
 			bool IsHit = false;
 			if (table->IsDirectAccess == true)
 			{
@@ -58,9 +60,14 @@ namespace scvm.core
 			IsSuccess[0] = false;
 			return null;
 		}
-		public PageTable* GetTable(ulong PageTablePtr)
+		public PageTable* GetTable(int CallerProcessor, ulong PageTablePtr)
 		{
-			byte* ptr = Memories[0].Ptr + PageTablePtr;
+			if (PageTablePtr > PageTableSize)
+			{
+				machine.InvPage(CallerProcessor, PageTablePtr);
+				return null;
+			}
+			byte* ptr = Memories[0].Ptr + PageTableOffset + PageTablePtr;
 			return (PageTable*)ptr;
 		}
 		public byte GetIndex(ulong ptr)
@@ -75,6 +82,12 @@ namespace scvm.core
 				if (item.Size > 0)
 					stdlib.free(item.Ptr);
 			}
+		}
+
+		public void SetPageTableCount(ulong offset, ulong size)
+		{
+			this.PageTableOffset = offset;
+			this.PageTableSize = size;
 		}
 	}
 }

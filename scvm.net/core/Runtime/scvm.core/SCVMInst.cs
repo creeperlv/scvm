@@ -134,6 +134,7 @@ namespace scvm.core
 		public const ushort Debug = 0x0001;
 		public const ushort PageFault = 0x0002;
 		public const ushort InvOpC = 0x0003;
+		public const ushort InvalidPage = 0x0004;
 	}
 	public enum SCVMCmpOps : byte
 	{
