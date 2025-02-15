@@ -136,6 +136,12 @@ namespace scvm.core
 		public const ushort InvOpC = 0x0003;
 		public const ushort InvalidPage = 0x0004;
 	}
+	public class SCVMSysRegIDs
+	{
+		public const ushort MachineState = 0x0000;
+		public const ushort PageTableOffset = 0x0001;
+		public const ushort PageTableSize = 0x0002;
+	}
 	public enum SCVMCmpOps : byte
 	{
 		LT = 0, GT = 1, GE = 2, EQ = 3, LE = 4, NE = 5,

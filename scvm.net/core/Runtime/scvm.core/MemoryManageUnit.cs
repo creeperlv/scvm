@@ -84,9 +84,13 @@ namespace scvm.core
 			}
 		}
 
-		public void SetPageTableCount(ulong offset, ulong size)
+		public void SetPageTableStart(ulong offset)
 		{
 			this.PageTableOffset = offset;
+		}
+
+		public void SetPageTableSize(ulong size)
+		{
 			this.PageTableSize = size;
 		}
 	}

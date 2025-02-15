@@ -59,15 +59,16 @@ namespace scvm.core
 					break;
 			}
 		}
-		public void SetInterruptHandler(ushort ID, InterruptType Type,InterruptHandler handler)
+		public void SetInterruptHandler(ushort ID, InterruptType Type, InterruptHandler handler)
 		{
 			switch (Type)
 			{
 				case InterruptType.HW:
 					if (HWInterruptHandlers.ContainsKey(ID))
 					{
-						HWInterruptHandlers[ID]=handler;
-					}else HWInterruptHandlers.Add(ID, handler);
+						HWInterruptHandlers[ID] = handler;
+					}
+					else HWInterruptHandlers.Add(ID, handler);
 					break;
 				case InterruptType.SW:
 					if (SWInterruptHandlers.ContainsKey(ID))
@@ -298,6 +299,29 @@ namespace scvm.core
 						var T = instruction.CastAsWOffsetBytes<Instruction, InterruptType>(2);
 						var id = instruction.CastAsWOffsetBytes<Instruction, ushort>(3);
 						ExecuteInterrupt(T, id);
+					}
+					break;
+				case SCVMInst.SYSREGW:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
+						switch (InstAlt.D0)
+						{
+							case SCVMSysRegIDs.MachineState:
+								{
+									state.MStat.Flags = (this.state.Register.GetData<ulong>(InstAlt.D1));
+								}
+								break;
+							case SCVMSysRegIDs.PageTableOffset:
+								{
+									ParentCPU.Machine.MMU.SetPageTableStart(this.state.Register.GetData<ulong>(InstAlt.D1));
+								}
+								break;
+							case SCVMSysRegIDs.PageTableSize:
+								{
+									ParentCPU.Machine.MMU.SetPageTableSize(this.state.Register.GetData<ulong>(InstAlt.D1));
+								}
+								break;
+						}
 					}
 					break;
 				case SCVMInst.NOP:

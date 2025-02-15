@@ -70,12 +70,12 @@ namespace scvm.tools.compiler.core
 				{"syscall", SCVMInst.SYSCALL },
 				{"int", SCVMInst.SYSCALL },
 				{"rf", SCVMInst.RF },
-				{"setmstat", SCVMInst.SYSREGW },
-				{"set.mstat", SCVMInst.SYSREGW },
-				{"mstat.set", SCVMInst.SYSREGW },
-				{"mstat.get", SCVMInst.SYSREGR },
-				{"getmstat", SCVMInst.SYSREGR },
-				{"get.mstat", SCVMInst.SYSREGR },
+				{"sysregw", SCVMInst.SYSREGW },
+				{"set.sysreg", SCVMInst.SYSREGW },
+				{"sysreg.set", SCVMInst.SYSREGW },
+				{"sysreg.get", SCVMInst.SYSREGR },
+				{"sysregr", SCVMInst.SYSREGR },
+				{"get.sysreg", SCVMInst.SYSREGR },
 
 			},
 

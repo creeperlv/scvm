@@ -20,6 +20,13 @@ namespace scvm.core
 		public uint D2;
 	}
 	[StructLayout(LayoutKind.Sequential)]
+	public struct Instruction_OpSysReg
+	{
+		public ushort op;
+		public ushort D0;
+		public byte D1;
+	}
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Instruction_JFOp
 	{
 		public ushort op;
