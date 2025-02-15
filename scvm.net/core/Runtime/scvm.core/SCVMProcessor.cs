@@ -324,6 +324,29 @@ namespace scvm.core
 						}
 					}
 					break;
+				case SCVMInst.SYSREGR:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
+						switch (InstAlt.D0)
+						{
+							case SCVMSysRegIDs.MachineState:
+								{
+									state.Register.SetData(InstAlt.D1, state.MStat);
+								}
+								break;
+							case SCVMSysRegIDs.PageTableOffset:
+								{
+									state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableStart());
+								}
+								break;
+							case SCVMSysRegIDs.PageTableSize:
+								{
+									state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableSize());
+								}
+								break;
+						}
+					}
+					break;
 				case SCVMInst.NOP:
 					break;
 				case SCVMInst.HALT:

@@ -93,5 +93,15 @@ namespace scvm.core
 		{
 			this.PageTableSize = size;
 		}
+
+		public ulong GetPageTableStart()
+		{
+			return this.PageTableOffset;
+		}
+
+		public ulong GetPageTableSize()
+		{
+			return this.PageTableSize;
+		}
 	}
 }
