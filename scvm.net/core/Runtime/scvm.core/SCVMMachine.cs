@@ -1,15 +1,16 @@
 ﻿using scvm.core.dispatchers;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace scvm.core
 {
 	public class SCVMCallingConvention
 	{
-		public const int Function_Parameter64_0=10;
-		public const int Function_Parameter64_1=11;
-		public const int Function_Parameter64_2=12;
+		public const int Function_Parameter64_0 = 10;
+		public const int Function_Parameter64_1 = 11;
+		public const int Function_Parameter64_2 = 12;
 	}
 	public unsafe class SCVMMachine : IDisposable
 	{
@@ -17,6 +18,23 @@ namespace scvm.core
 		public SCVMCPU CPU;
 		public MachineWrokMode WrokMode = MachineWrokMode.DisposeOnDoneExecution;
 		public IDispatcher Dispatcher;
+		public Dictionary<ushort, ISCVMSysRegHandler> SysRegisters = new Dictionary<ushort, ISCVMSysRegHandler>();
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void RegisterSysRegister(ushort id, ISCVMSysRegHandler handler)
+		{
+			if (SysRegisters.ContainsKey(id))
+				SysRegisters[id] = handler;
+			else
+				SysRegisters.Add(id, handler);
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void UnregisterSysRegister(ushort id, ISCVMSysRegHandler handler)
+		{
+			if (SysRegisters.ContainsKey(id))
+			{
+				SysRegisters.Remove(id);
+			}
+		}
 		public byte* UnknownInterrupt(int Processor, InterruptType InterruptType, ushort InterruptID)
 		{
 			return null;
@@ -44,44 +62,9 @@ namespace scvm.core
 		ContinuousExistence,
 		DisposeOnDoneExecution,
 	}
-	public unsafe class SCVMCPU : IDisposable
+	public unsafe interface ISCVMSysRegHandler
 	{
-		public SCVMMachine Machine;
-		public List<SCVMProcessor> Processors;
-		public int MaxCPUCount;
-		private int doneCount = 0;
-		public SCVMCPU()
-		{
-			Processors = new List<SCVMProcessor>
-			{
-				new SCVMProcessor()
-			};
-			MaxCPUCount = 1;
-		}
-		public SCVMCPU(int CPUCount)
-		{
-			Processors = new List<SCVMProcessor>();
-			for (int i = 0; i < CPUCount; i++)
-			{
-				Processors.Add(new SCVMProcessor());
-			}
-			MaxCPUCount = CPUCount;
-		}
-		public void ReportDone(int ProcessorID)
-		{
-			doneCount++;
-			if (doneCount >= Processors.Count)
-			{
-				if (Machine.WrokMode == MachineWrokMode.DisposeOnDoneExecution)
-					Machine.Dispose();
-			}
-		}
-		public void Dispose()
-		{
-			foreach (var processor in Processors)
-			{
-				processor.Dispose();
-			}
-		}
+		void SYSREGR(ushort ID, int CPUID, byte* startRegPtr);
+		void SYSREGW(ushort ID, int CPUID, byte* startRegPtr);
 	}
 }

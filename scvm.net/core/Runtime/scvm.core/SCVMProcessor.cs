@@ -321,6 +321,13 @@ namespace scvm.core
 									ParentCPU.Machine.MMU.SetPageTableSize(this.state.Register.GetData<ulong>(InstAlt.D1));
 								}
 								break;
+							default:
+								if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
+								{
+									Reg.SYSREGW(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
+								}
+								break;
+
 						}
 					}
 					break;
@@ -342,6 +349,12 @@ namespace scvm.core
 							case SCVMSysRegIDs.PageTableSize:
 								{
 									state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableSize());
+								}
+								break;
+							default:
+								if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
+								{
+									Reg.SYSREGR(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
 								}
 								break;
 						}
