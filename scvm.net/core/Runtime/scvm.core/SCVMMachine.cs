@@ -12,6 +12,11 @@ namespace scvm.core
 		public const int Function_Parameter64_1 = 11;
 		public const int Function_Parameter64_2 = 12;
 	}
+	public struct SCVMTimerCfg
+	{
+		public ushort TargetIC;
+		public byte IsSet;
+	}
 	public unsafe class SCVMMachine : IDisposable
 	{
 		public IMemoryManagementUnit MMU;

@@ -13,6 +13,14 @@ namespace scvm.core
 	{
 		public ulong Flags;
 		public ulong PC;
+		public bool IsPrivileged()
+		{
+			return (Flags & MStatFlags.Privilege) == MStatFlags.Privilege;
+		}
+	}
+	public class MStatFlags
+	{
+		public const ulong Privilege = 0x1;
 	}
 	public enum InterruptType : byte
 	{
@@ -304,60 +312,76 @@ namespace scvm.core
 					break;
 				case SCVMInst.SYSREGW:
 					{
-						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
-						switch (InstAlt.D0)
+						if (this.state.MStat.IsPrivileged())
 						{
-							case SCVMSysRegIDs.MachineState:
-								{
-									state.MStat.Flags = (this.state.Register.GetData<ulong>(InstAlt.D1));
-								}
-								break;
-							case SCVMSysRegIDs.PageTableOffset:
-								{
-									ParentCPU.Machine.MMU.SetPageTableStart(this.state.Register.GetData<ulong>(InstAlt.D1));
-								}
-								break;
-							case SCVMSysRegIDs.PageTableSize:
-								{
-									ParentCPU.Machine.MMU.SetPageTableSize(this.state.Register.GetData<ulong>(InstAlt.D1));
-								}
-								break;
-							default:
-								if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
-								{
-									Reg.SYSREGW(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
-								}
-								break;
 
+							var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
+							switch (InstAlt.D0)
+							{
+								case SCVMSysRegIDs.MachineState:
+									{
+										state.MStat.Flags = (this.state.Register.GetData<ulong>(InstAlt.D1));
+									}
+									break;
+								case SCVMSysRegIDs.PageTableOffset:
+									{
+										ParentCPU.Machine.MMU.SetPageTableStart(this.state.Register.GetData<ulong>(InstAlt.D1));
+									}
+									break;
+								case SCVMSysRegIDs.PageTableSize:
+									{
+										ParentCPU.Machine.MMU.SetPageTableSize(this.state.Register.GetData<ulong>(InstAlt.D1));
+									}
+									break;
+								default:
+									if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
+									{
+										Reg.SYSREGW(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
+									}
+									break;
+
+							}
+						}
+						else
+						{
+							ControlProtect();
 						}
 					}
 					break;
 				case SCVMInst.SYSREGR:
 					{
-						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
-						switch (InstAlt.D0)
+						if (this.state.MStat.IsPrivileged())
 						{
-							case SCVMSysRegIDs.MachineState:
-								{
-									state.Register.SetData(InstAlt.D1, state.MStat);
-								}
-								break;
-							case SCVMSysRegIDs.PageTableOffset:
-								{
-									state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableStart());
-								}
-								break;
-							case SCVMSysRegIDs.PageTableSize:
-								{
-									state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableSize());
-								}
-								break;
-							default:
-								if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
-								{
-									Reg.SYSREGR(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
-								}
-								break;
+
+							var InstAlt = instruction.CastAs<Instruction, Instruction_OpSysReg>(0);
+							switch (InstAlt.D0)
+							{
+								case SCVMSysRegIDs.MachineState:
+									{
+										state.Register.SetData(InstAlt.D1, state.MStat);
+									}
+									break;
+								case SCVMSysRegIDs.PageTableOffset:
+									{
+										state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableStart());
+									}
+									break;
+								case SCVMSysRegIDs.PageTableSize:
+									{
+										state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableSize());
+									}
+									break;
+								default:
+									if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
+									{
+										Reg.SYSREGR(InstAlt.D0, ThisProcessorID, this.state.Register.Registers + InstAlt.D1);
+									}
+									break;
+							}
+						}
+						else
+						{
+							ControlProtect();
 						}
 					}
 					break;
@@ -474,11 +498,17 @@ namespace scvm.core
 					break;
 			}
 		}
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public void ControlProtect()
+		{
+			this.TryHWInterrupt(SCVMBasicHardwareInterruptTable.ControlProtect);
+		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AdvancePC()
 		{
 			this.state.MStat.PC += 1;
+			if (this.state.TimerCfg.IsSet != 0)
+				this.state.RelativePC += 1;
 		}
 	}
 }
