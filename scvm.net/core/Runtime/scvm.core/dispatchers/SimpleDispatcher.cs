@@ -29,7 +29,7 @@ namespace scvm.core.dispatchers
 		public void StartExecute(ulong PC)
 		{
 
-			machine.CPU.Processors[0].state.PC = PC;
+			machine.CPU.Processors[0].state.MStat.PC = PC;
 			willRun = true;
 			while (willRun)
 			{
@@ -48,7 +48,7 @@ namespace scvm.core.dispatchers
 
 		public void StartExecute(int ProcessorID, ulong PC)
 		{
-			machine.CPU.Processors[ProcessorID].state.PC = PC;
+			machine.CPU.Processors[ProcessorID].state.MStat.PC = PC;
 			willRun = true;
 			while (willRun)
 			{
@@ -93,7 +93,7 @@ namespace scvm.core.dispatchers
 			willRun = true;
 			Task.Run(() =>
 			{
-				machine.CPU.Processors[0].state.PC = PC;
+				machine.CPU.Processors[0].state.MStat.PC = PC;
 				while (willRun)
 				{
 					machine.CPU.Processors[0].Execute();
@@ -112,7 +112,7 @@ namespace scvm.core.dispatchers
 
 		public void StartExecute(int ProcessorID, ulong PC)
 		{
-			machine.CPU.Processors[ProcessorID].state.PC = PC;
+			machine.CPU.Processors[ProcessorID].state.MStat.PC = PC;
 			willRun = true;
 			while (willRun)
 			{

@@ -12,6 +12,7 @@ namespace scvm.core
 	public struct SCVMMachineStat
 	{
 		public ulong Flags;
+		public ulong PC;
 	}
 	public enum InterruptType : byte
 	{
@@ -103,7 +104,7 @@ namespace scvm.core
 				}
 
 			}
-			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
+			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.MStat.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
 
 			if (inst == null)
 			{
@@ -140,20 +141,20 @@ namespace scvm.core
 						{
 							var offset = state.Register.GetData<int>(InstAlt.D2.CastAs<uint, int>(0));
 							if (offset > 0)
-								state.PC += (uint)offset;
+								state.MStat.PC += (uint)offset;
 							else
 							{
-								state.PC -= (uint)(-offset);
+								state.MStat.PC -= (uint)(-offset);
 							}
 						}
 						else
 						{
 							var offset = InstAlt.D2.CastAs<uint, int>(0);
 							if (offset > 0)
-								state.PC += (uint)offset;
+								state.MStat.PC += (uint)offset;
 							else
 							{
-								state.PC -= (uint)(-offset);
+								state.MStat.PC -= (uint)(-offset);
 							}
 						}
 					}
@@ -172,20 +173,20 @@ namespace scvm.core
 								var PCOffsetReg = InstAlt.D1;
 								var offset = this.state.Register.GetData<int>(PCOffsetReg);
 								if (offset > 0)
-									state.PC += (uint)offset;
+									state.MStat.PC += (uint)offset;
 								else
 								{
-									state.PC -= (uint)(-offset);
+									state.MStat.PC -= (uint)(-offset);
 								}
 							}
 							else
 							{
 								var offset = InstAlt2.D1;
 								if (offset > 0)
-									state.PC += (uint)offset;
+									state.MStat.PC += (uint)offset;
 								else
 								{
-									state.PC -= (uint)(-offset);
+									state.MStat.PC -= (uint)(-offset);
 								}
 							}
 						}
@@ -425,7 +426,7 @@ namespace scvm.core
 							this.state.IsInterrupt = true;
 							this.state.InterruptType = T;
 							this.state.InterruptID = id;
-							this.state.PC = config.PC;
+							this.state.MStat.PC = config.PC;
 						}
 					}
 					break;
@@ -465,7 +466,7 @@ namespace scvm.core
 							this.state.IsInterrupt = true;
 							this.state.InterruptType = T;
 							this.state.InterruptID = id;
-							this.state.PC = config.PC;
+							this.state.MStat.PC = config.PC;
 						}
 					}
 					break;
@@ -477,7 +478,7 @@ namespace scvm.core
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AdvancePC()
 		{
-			this.state.PC += 1;
+			this.state.MStat.PC += 1;
 		}
 	}
 }

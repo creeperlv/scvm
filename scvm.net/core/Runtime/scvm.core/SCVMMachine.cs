@@ -49,7 +49,13 @@ namespace scvm.core
 			((ulong*)this.CPU.Processors[CPU].state.Register.Registers)[SCVMCallingConvention.Function_Parameter64_2] = PageTablePtr;
 			this.CPU.Processors[CPU].TryHWInterrupt(SCVMBasicHardwareInterruptTable.InvalidPage);
 		}
-		public void InvalidInstruction(int CPU, Instruction instruction) { }
+		public void InvalidInstruction(int CPU, Instruction instruction)
+		{
+
+			((Instruction*)this.CPU.Processors[CPU].state.Register.Registers)[SCVMCallingConvention.Function_Parameter64_2] = instruction;
+			this.CPU.Processors[CPU].TryHWInterrupt(SCVMBasicHardwareInterruptTable.InvOpC);
+
+		}
 
 		public void Dispose()
 		{
