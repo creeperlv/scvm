@@ -7,7 +7,7 @@ namespace scvm.core
 	{
 		//public ulong PC;
 		public SCVMMachineStat MStat;
-		public ulong PageTable;
+		//public ulong PageTable;
 		public SCVMRegister Register;
 		public bool IsInterrupt;
 		public InterruptType InterruptType;

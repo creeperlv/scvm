@@ -13,6 +13,7 @@ namespace scvm.core
 	{
 		public ulong Flags;
 		public ulong PC;
+		public ulong PT;
 		public bool IsPrivileged()
 		{
 			return (Flags & MStatFlags.Privilege) == MStatFlags.Privilege;
@@ -112,7 +113,7 @@ namespace scvm.core
 				}
 
 			}
-			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.MStat.PC, state.PageTable, ThisProcessorID, sizeof(Instruction));
+			var inst = ParentCPU.Machine.MMU.GetPtr((ulong)state.MStat.PC, state.MStat.PT, ThisProcessorID, sizeof(Instruction));
 
 			if (inst == null)
 			{
@@ -238,12 +239,12 @@ namespace scvm.core
 						var sPtr = state.Register.GetData<ulong>(sReg);
 						var tPtr = state.Register.GetData<ulong>(tReg);
 						var len = state.Register.GetData<int>(lReg);
-						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
+						var src = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.MStat.PT, this.ThisProcessorID, len);
 						if (src == null)
 						{
 							return;
 						}
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.PageTable, this.ThisProcessorID, len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(sPtr, this.state.MStat.PT, this.ThisProcessorID, len);
 						if (ptr == null)
 						{
 							return;
@@ -268,7 +269,7 @@ namespace scvm.core
 						{
 							Len = state.Register.GetData<byte>(Length);
 						}
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.MStat.PT, this.ThisProcessorID, Len);
 						if (ptr == null)
 						{
 							return;
@@ -295,7 +296,7 @@ namespace scvm.core
 						{
 							Len = state.Register.GetData<byte>(Length);
 						}
-						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.PageTable, this.ThisProcessorID, Len);
+						var ptr = this.ParentCPU.Machine.MMU.GetPtr(Ptr, this.state.MStat.PT, this.ThisProcessorID, Len);
 						if (ptr == null)
 						{
 							return;
@@ -451,6 +452,7 @@ namespace scvm.core
 							this.state.InterruptType = T;
 							this.state.InterruptID = id;
 							this.state.MStat.PC = config.PC;
+							this.state.MStat.PT = config.PT;
 						}
 					}
 					break;
@@ -491,6 +493,7 @@ namespace scvm.core
 							this.state.InterruptType = T;
 							this.state.InterruptID = id;
 							this.state.MStat.PC = config.PC;
+							this.state.MStat.PT = config.PT;
 						}
 					}
 					break;
