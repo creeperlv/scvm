@@ -334,6 +334,11 @@ namespace scvm.core
 										ParentCPU.Machine.MMU.SetPageTableSize(this.state.Register.GetData<ulong>(InstAlt.D1));
 									}
 									break;
+								case SCVMSysRegIDs.TimerConfig:
+									{
+										this.state.TimerCfg = state.Register.GetData<SCVMTimerCfg>(InstAlt.D1);
+									}
+									break;
 								default:
 									if (ParentCPU.Machine.SysRegisters.TryGetValue(InstAlt.D0, out var Reg))
 									{
@@ -370,6 +375,11 @@ namespace scvm.core
 								case SCVMSysRegIDs.PageTableSize:
 									{
 										state.Register.SetData(InstAlt.D1, ParentCPU.Machine.MMU.GetPageTableSize());
+									}
+									break;
+								case SCVMSysRegIDs.TimerConfig:
+									{
+										state.Register.SetData(InstAlt.D1, this.state.TimerCfg);
 									}
 									break;
 								default:
