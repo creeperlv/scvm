@@ -70,6 +70,58 @@ namespace scvm.tools.compiler.core.CompilerFunctions.FirstPass
 			}
 			return true;
 		}
+		public unsafe static bool Assemble_SYSREGRW(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
+		{
+			switch (instID)
+			{
+				case SCVMInst.SYSREGR:
+				case SCVMInst.SYSREGW:
+					break;
+				default:
+					return false;
+			}
+			SegmentTraveler st = new SegmentTraveler(s);
+			var sPos = IInstruction.sourcePosition;
+			Instruction inst = default;
+			IntPtr InstPtr = (IntPtr)(&inst);
+			SourcePosition sourcePosition = IInstruction.sourcePosition;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sPos));
+				return false;
+			}
+			var current = st.Current;
+
+			var L = current;
+			if (!st.GoNext())
+			{
+				result.AddError(new IncompleteInstructionError(st.Current, sourcePosition));
+				return false;
+			}
+			current = st.Current;
+			var T = current;
+			InstPtr.Set(instID, 0);
+
+			if (CurrentDefinition.NativeTypes.TryGetValue(L.content.ToLower(), out var ID))
+			{
+				InstPtr.Set(ID, 2);
+			}
+			else
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(current.content, 0));
+				IInstruction.IsIntermediate = true;
+			}
+			if (DataConversion.TryParseRegister(CurrentDefinition, T.content, result, out var _T))
+			{
+				InstPtr.Set(_T, 4);
+			}
+			else
+			{
+				IInstruction.UnsolvedSymbols.Add(new UnsolvedSymbol(T.content, 1));
+				IInstruction.IsIntermediate = true;
+			}
+			return true;
+		}
 		public unsafe static bool Assemble_RF(ISADefinition CurrentDefinition, ushort instID, Segment s, OperationResult<CompilationObject> result, IntermediateInstruction IInstruction, int PC)
 		{
 			if (instID != SCVMInst.RF)

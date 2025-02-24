@@ -99,6 +99,20 @@ namespace scvm.tools.compiler.core
 				{"uint32",NativeType.IU},
 				{"register",NativeType.R},
 			},
+			PredefinedSymbols = new Dictionary<string, string>()
+			{
+				{"PageTableSize", $"{SCVMSysRegIDs.PageTableSize}" },
+				{"PTS", $"{SCVMSysRegIDs.PageTableSize}" },
+				{"PTSize", $"{SCVMSysRegIDs.PageTableSize}" },
+				{"MachineState", $"{SCVMSysRegIDs.MachineState}" },
+				{"MS", $"{SCVMSysRegIDs.MachineState}" },
+				{"MState", $"{SCVMSysRegIDs.MachineState}" },
+				{"PageTableOffset", $"{SCVMSysRegIDs.PageTableOffset}" },
+				{"PTO", $"{SCVMSysRegIDs.PageTableOffset}" },
+				{"PTOffset", $"{SCVMSysRegIDs.PageTableOffset}" },
+				{"TimerConfig", $"{SCVMSysRegIDs.TimerConfig}" },
+				{"TC", $"{SCVMSysRegIDs.TimerConfig}" },
+			}
 		};
 
 	}

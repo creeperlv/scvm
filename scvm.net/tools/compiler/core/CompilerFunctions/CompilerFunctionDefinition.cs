@@ -35,6 +35,8 @@ namespace scvm.tools.compiler.core.CompilerFunctions
 				{SCVMInst.LR,MemoryCompilerFunctions.Compile_BasicLRSR},
 				{SCVMInst.SR,MemoryCompilerFunctions.Compile_BasicLRSR},
 				{SCVMInst.SYSCALL,SysCompilerFunctions.Assemble_SYSCALL},
+				{SCVMInst.SYSREGR,SysCompilerFunctions.Assemble_SYSREGRW},
+				{SCVMInst.SYSREGW,SysCompilerFunctions.Assemble_SYSREGRW},
 				{SCVMInst.RF,SysCompilerFunctions.Assemble_RF},
 				{SCVMInst.CP,MemoryCompilerFunctions.Compile_BasicCP},
 			}
