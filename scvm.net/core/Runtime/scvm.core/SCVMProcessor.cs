@@ -143,6 +143,26 @@ namespace scvm.core
 						SCVMMathFunctions.MathDiv(state.Register, instruction);
 					}
 					break;
+				case SCVMInst.OFC_ADD:
+					{
+						SCVMMathFunctions.MathAdd(state.Register, instruction);
+					}
+					break;
+				case SCVMInst.OFC_SUB:
+					{
+						SCVMMathFunctions.MathSub(state.Register, instruction);
+					}
+					break;
+				case SCVMInst.OFC_MUL:
+					{
+						SCVMMathFunctions.MathMul(state.Register, instruction);
+					}
+					break;
+				case SCVMInst.OFC_DIV:
+					{
+						SCVMMathFunctions.MathDiv(state.Register, instruction);
+					}
+					break;
 				case SCVMInst.JMP:
 					{
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
