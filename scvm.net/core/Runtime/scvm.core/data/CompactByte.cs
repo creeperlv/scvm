@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace scvm.core.data
 {
@@ -146,6 +147,56 @@ namespace scvm.core.data
 		public bool NE(CompactByte R)
 		{
 			return this.Value != R.Value;
+		}
+
+		public INumbericData<CompactByte> Cast_Byte()
+		{
+			return new CompactByte(Value);
+		}
+
+		public INumbericData<CompactSByte> Cast_SByte()
+		{
+			return new CompactSByte((sbyte)Value);
+		}
+
+		public INumbericData<CompactShort> Cast_Short()
+		{
+			return new CompactShort((short)Value);
+		}
+
+		public INumbericData<CompactUShort> Cast_UShort()
+		{
+			return new CompactUShort((ushort)Value);
+		}
+
+		public INumbericData<CompactInt> Cast_Int()
+		{
+			return new CompactInt((int)Value);
+		}
+
+		public INumbericData<CompactUInt> Cast_UInt()
+		{
+			return new CompactUInt((uint)Value);
+		}
+
+		public INumbericData<CompactLong> Cast_Long()
+		{
+			return new CompactLong((long)Value);
+		}
+
+		public INumbericData<CompactULong> Cast_ULong()
+		{
+			return new CompactULong((ulong)Value);
+		}
+
+		public INumbericData<CompactDouble> Cast_Double()
+		{
+			return new CompactDouble((double)Value);
+		}
+
+		public INumbericData<CompactSingle> Cast_Float()
+		{
+			return new CompactSingle((float)Value);
 		}
 	}
 

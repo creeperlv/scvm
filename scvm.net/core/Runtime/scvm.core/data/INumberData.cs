@@ -36,6 +36,16 @@ namespace scvm.core.data
 		bool EQ(T R);
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		bool NE(T R);
+		INumbericData<CompactByte> Cast_Byte();
+		INumbericData<CompactSByte> Cast_SByte();
+		INumbericData<CompactShort> Cast_Short();
+		INumbericData<CompactUShort> Cast_UShort();
+		INumbericData<CompactInt> Cast_Int();
+		INumbericData<CompactUInt> Cast_UInt();
+		INumbericData<CompactLong> Cast_Long();
+		INumbericData<CompactULong> Cast_ULong();
+		INumbericData<CompactDouble> Cast_Double();
+		INumbericData<CompactSingle> Cast_Float();
 	}
 	public struct SCVMSimpleResult<T> where T : unmanaged
 	{

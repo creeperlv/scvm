@@ -163,6 +163,11 @@ namespace scvm.core
 						SCVMMathFunctions.MathDiv(state.Register, instruction);
 					}
 					break;
+				case SCVMInst.CVT:
+					{
+
+					}
+					break;
 				case SCVMInst.JMP:
 					{
 						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
