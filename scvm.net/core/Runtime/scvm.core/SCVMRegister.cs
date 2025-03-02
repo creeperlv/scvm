@@ -1,4 +1,5 @@
-﻿using System;
+﻿using scvm.core.data;
+using System;
 using System.Runtime.CompilerServices;
 using static scvm.core.libNative.stdlib;
 namespace scvm.core
@@ -25,6 +26,11 @@ namespace scvm.core
 			if (offset + sizeof(T) > RegisterLimit) return default;
 			var ptr = Registers + offset;
 			return ((T*)ptr)[0];
+		}
+		public void WriteData(int offset, IPointerWritable writable)
+		{
+			if (offset + writable.SizeOf() > RegisterLimit) return;
+			writable.Write(Registers + offset);
 		}
 		public void SetData<T>(int offset, T d) where T : unmanaged
 		{

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace scvm.core.data
 {
-	public interface INumbericData<T> where T : unmanaged
+	public interface INumbericData<T> : IPointerWritable where T : unmanaged
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		T Add(T R);
@@ -46,6 +46,11 @@ namespace scvm.core.data
 		INumbericData<CompactULong> Cast_ULong();
 		INumbericData<CompactDouble> Cast_Double();
 		INumbericData<CompactSingle> Cast_Float();
+	}
+	public unsafe interface IPointerWritable
+	{
+		public void Write(byte* targetPtr);
+		public int SizeOf();
 	}
 	public struct SCVMSimpleResult<T> where T : unmanaged
 	{

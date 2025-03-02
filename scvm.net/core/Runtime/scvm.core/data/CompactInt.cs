@@ -179,7 +179,7 @@ namespace scvm.core.data
 		}
 
 		public INumbericData<CompactLong> Cast_Long()
-		{
+		{`
 			return new CompactLong((long)Value);
 		}
 
@@ -196,6 +196,15 @@ namespace scvm.core.data
 		public INumbericData<CompactSingle> Cast_Float()
 		{
 			return new CompactSingle((float)Value);
+		}
+
+		public unsafe void Write(byte* targetPtr)
+		{
+			((int*)targetPtr)[0] = this.Value;
+		}
+		public int SizeOf()
+		{
+			return sizeof(int);
 		}
 	}
 

@@ -195,6 +195,14 @@ namespace scvm.core.data
 		{
 			return new CompactSingle((float)Value);
 		}
+		public unsafe void Write(byte* targetPtr)
+		{
+			((long*)targetPtr)[0] = this.Value;
+		}
+		public int SizeOf()
+		{
+			return sizeof(long);
+		}
 	}
 
 }

@@ -1,4 +1,5 @@
-﻿using scvm.core.functions;
+﻿using scvm.core.data;
+using scvm.core.functions;
 using scvm.core.libNative;
 using scvm.core.utilities;
 using System;
@@ -165,7 +166,161 @@ namespace scvm.core
 					break;
 				case SCVMInst.CVT:
 					{
-
+						Instruction_OpSeparated_ByteSegmented altInst=instruction.CastAs<Instruction,Instruction_OpSeparated_ByteSegmented>();
+						var L=altInst.D0;
+						var R=altInst.D1;
+						var LType=(NativeType)altInst.D2;
+						var RType= (NativeType)altInst.D3;
+						switch (LType)
+						{
+							case NativeType.BS:
+								{
+									var value=this.state.Register.GetData<CompactSByte>(L);
+									switch (RType)
+									{
+										case NativeType.BS:
+											this.state.Register.WriteData(R,value.Cast_SByte());
+											break;
+										case NativeType.BU:
+											this.state.Register.WriteData(R,value.Cast_Byte());
+											break;
+										case NativeType.S:
+											this.state.Register.WriteData(R,value.Cast_Short());
+											break;
+										case NativeType.SU:
+											this.state.Register.WriteData(R,value.Cast_UShort());
+											break;
+										case NativeType.I:
+											this.state.Register.WriteData(R,value.Cast_Int());
+											break;
+										case NativeType.IU:
+											this.state.Register.WriteData(R,value.Cast_UInt());
+											break;
+										case NativeType.L:
+											this.state.Register.WriteData(R,value.Cast_Long());
+											break;
+										case NativeType.LU:
+											this.state.Register.WriteData(R,value.Cast_ULong());
+											break;
+										case NativeType.F:
+											this.state.Register.WriteData(R,value.Cast_Float());
+											break;
+										case NativeType.D:
+											this.state.Register.WriteData(R,value.Cast_Double());
+											break;
+										case NativeType.R:
+											this.state.Register.WriteData(R,value.Cast_Byte());
+											break;
+										default:
+											break;
+									}
+								}
+								break;
+							case NativeType.BU:
+								{
+									var value = this.state.Register.GetData<CompactByte>(L);
+									switch (RType)
+									{
+										case NativeType.BS:
+											this.state.Register.WriteData(R, value.Cast_SByte());
+											break;
+										case NativeType.BU:
+											this.state.Register.WriteData(R, value.Cast_Byte());
+											break;
+										case NativeType.S:
+											this.state.Register.WriteData(R, value.Cast_Short());
+											break;
+										case NativeType.SU:
+											this.state.Register.WriteData(R, value.Cast_UShort());
+											break;
+										case NativeType.I:
+											this.state.Register.WriteData(R, value.Cast_Int());
+											break;
+										case NativeType.IU:
+											this.state.Register.WriteData(R, value.Cast_UInt());
+											break;
+										case NativeType.L:
+											this.state.Register.WriteData(R, value.Cast_Long());
+											break;
+										case NativeType.LU:
+											this.state.Register.WriteData(R, value.Cast_ULong());
+											break;
+										case NativeType.F:
+											this.state.Register.WriteData(R, value.Cast_Float());
+											break;
+										case NativeType.D:
+											this.state.Register.WriteData(R, value.Cast_Double());
+											break;
+										case NativeType.R:
+											this.state.Register.WriteData(R, value.Cast_Byte());
+											break;
+										default:
+											break;
+									}
+								}
+								break;
+							case NativeType.S:
+								{
+									var value = this.state.Register.GetData<CompactShort>(L);
+									switch (RType)
+									{
+										case NativeType.BS:
+											this.state.Register.WriteData(R, value.Cast_SByte());
+											break;
+										case NativeType.BU:
+											this.state.Register.WriteData(R, value.Cast_Byte());
+											break;
+										case NativeType.S:
+											this.state.Register.WriteData(R, value.Cast_Short());
+											break;
+										case NativeType.SU:
+											this.state.Register.WriteData(R, value.Cast_UShort());
+											break;
+										case NativeType.I:
+											this.state.Register.WriteData(R, value.Cast_Int());
+											break;
+										case NativeType.IU:
+											this.state.Register.WriteData(R, value.Cast_UInt());
+											break;
+										case NativeType.L:
+											this.state.Register.WriteData(R, value.Cast_Long());
+											break;
+										case NativeType.LU:
+											this.state.Register.WriteData(R, value.Cast_ULong());
+											break;
+										case NativeType.F:
+											this.state.Register.WriteData(R, value.Cast_Float());
+											break;
+										case NativeType.D:
+											this.state.Register.WriteData(R, value.Cast_Double());
+											break;
+										case NativeType.R:
+											this.state.Register.WriteData(R, value.Cast_Byte());
+											break;
+										default:
+											break;
+									}
+								}
+								break;
+							case NativeType.SU:
+								break;
+							case NativeType.I:
+								break;
+							case NativeType.IU:
+								break;
+							case NativeType.L:
+								break;
+							case NativeType.LU:
+								break;
+							case NativeType.F:
+								break;
+							case NativeType.D:
+								break;
+							case NativeType.R:
+								break;
+							default:
+								break;
+						}
 					}
 					break;
 				case SCVMInst.JMP:

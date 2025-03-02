@@ -45,15 +45,4 @@ namespace scvm.core
 		public byte D4;
 		public byte D5;
 	}
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Instruction_OpSeparated_ByteSegmented2
-	{
-		public ushort op;
-		public byte D0;
-		public byte D1;
-		public byte D2;
-		public byte D3;
-		public byte D4;
-		public byte D5;
-	}
 }
