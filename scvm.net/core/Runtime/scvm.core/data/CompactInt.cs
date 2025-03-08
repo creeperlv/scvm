@@ -179,7 +179,7 @@ namespace scvm.core.data
 		}
 
 		public INumbericData<CompactLong> Cast_Long()
-		{`
+		{
 			return new CompactLong((long)Value);
 		}
 
