@@ -166,50 +166,50 @@ namespace scvm.core
 					break;
 				case SCVMInst.CVT:
 					{
-						Instruction_OpSeparated_ByteSegmented altInst=instruction.CastAs<Instruction,Instruction_OpSeparated_ByteSegmented>();
-						var L=altInst.D0;
-						var R=altInst.D1;
-						var LType=(NativeType)altInst.D2;
-						var RType= (NativeType)altInst.D3;
+						Instruction_OpSeparated_ByteSegmented altInst = instruction.CastAs<Instruction, Instruction_OpSeparated_ByteSegmented>();
+						var L = altInst.D0;
+						var R = altInst.D1;
+						var LType = (NativeType)altInst.D2;
+						var RType = (NativeType)altInst.D3;
 						switch (LType)
 						{
 							case NativeType.BS:
 								{
-									var value=this.state.Register.GetData<CompactSByte>(L);
+									var value = this.state.Register.GetData<CompactSByte>(L);
 									switch (RType)
 									{
 										case NativeType.BS:
-											this.state.Register.WriteData(R,value.Cast_SByte());
+											this.state.Register.WriteData(R, value.Cast_SByte());
 											break;
 										case NativeType.BU:
-											this.state.Register.WriteData(R,value.Cast_Byte());
+											this.state.Register.WriteData(R, value.Cast_Byte());
 											break;
 										case NativeType.S:
-											this.state.Register.WriteData(R,value.Cast_Short());
+											this.state.Register.WriteData(R, value.Cast_Short());
 											break;
 										case NativeType.SU:
-											this.state.Register.WriteData(R,value.Cast_UShort());
+											this.state.Register.WriteData(R, value.Cast_UShort());
 											break;
 										case NativeType.I:
-											this.state.Register.WriteData(R,value.Cast_Int());
+											this.state.Register.WriteData(R, value.Cast_Int());
 											break;
 										case NativeType.IU:
-											this.state.Register.WriteData(R,value.Cast_UInt());
+											this.state.Register.WriteData(R, value.Cast_UInt());
 											break;
 										case NativeType.L:
-											this.state.Register.WriteData(R,value.Cast_Long());
+											this.state.Register.WriteData(R, value.Cast_Long());
 											break;
 										case NativeType.LU:
-											this.state.Register.WriteData(R,value.Cast_ULong());
+											this.state.Register.WriteData(R, value.Cast_ULong());
 											break;
 										case NativeType.F:
-											this.state.Register.WriteData(R,value.Cast_Float());
+											this.state.Register.WriteData(R, value.Cast_Float());
 											break;
 										case NativeType.D:
-											this.state.Register.WriteData(R,value.Cast_Double());
+											this.state.Register.WriteData(R, value.Cast_Double());
 											break;
 										case NativeType.R:
-											this.state.Register.WriteData(R,value.Cast_Byte());
+											this.state.Register.WriteData(R, value.Cast_Byte());
 											break;
 										default:
 											break;
@@ -987,7 +987,18 @@ namespace scvm.core
 		{
 			this.state.MStat.PC += 1;
 			if (this.state.TimerCfg.IsSet != 0)
+			{
 				this.state.RelativePC += 1;
+				if (this.state.RelativePC >= this.state.TimerCfg.TargetIC)
+				{
+					this.TryHWInterrupt(SCVMBasicHardwareInterruptTable.ICTimer);
+					this.state.RelativePC = 0;
+				}
+			}
+			else
+			{
+				this.state.RelativePC = 0;
+			}
 		}
 	}
 }
