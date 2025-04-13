@@ -867,6 +867,12 @@ namespace scvm.core
 				case SCVMInst.HALT:
 					OnHaltCalled?.Invoke();
 					break;
+				case SCVMInst.SCALC:
+					{
+						var InstAlt = instruction.CastAs<Instruction, Instruction_OpSeparated>(0);
+						SCVMAdvMathFunctions.Scalc(this.state.Register, InstAlt);
+					}
+					break;
 				default:
 					break;
 			}

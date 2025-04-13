@@ -40,10 +40,10 @@ namespace scvm.core
 		public const ushort SET = 0x0005;
 		//CVT $L $T <SourceType> <TargetType>
 		public const ushort CVT = 0x0006;
-		//Single Calc:
+		//Single Calc in Double:
 		//SCALC $S $T <OP>
 		public const ushort SCALC = 0x0007;
-		//DCALC Calc:
+		//DCALC Calc in Double:
 		//SCALC $L $R $T <OP>
 		public const ushort DCALC = 0x0008;
 		//Save Register
