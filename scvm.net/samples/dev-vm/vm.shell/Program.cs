@@ -1,5 +1,6 @@
 ﻿using Raylib_cs.BleedingEdge;
 using System.Numerics;
+using vm.core;
 using vm.core.Controls;
 
 namespace vm.shell;
@@ -26,12 +27,12 @@ class Program
 		DrawCore core = new DrawCore();
 		core.NormalFont = Raylib.GetFontDefault();
 		Console.WriteLine(Raylib.GetFontDefault().BaseSize);
+		MainWindow mw = new MainWindow();
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
-			core.DrawText(new System.Numerics.Vector2(10, 10), new System.Numerics.Vector2(50, 8), "A fox jumps over the lazy dog", Color.White);
-			Raylib.DrawText("A fox jumps over the lazy dog", 10, 50, 10, Color.White);
+			mw.Draw(core, new Vector4(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight()));
 			Raylib.EndDrawing();
 		}
 	}

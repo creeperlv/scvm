@@ -67,10 +67,19 @@ namespace vm.core.Controls
 			var Y = (int)(vector.Y * Scale);
 			var W = (int)(vector.Z * Scale);
 			var H = (int)(vector.W * Scale);
-			Raylib_cs.BleedingEdge.Raylib.DrawRectangle(X, Y, W, H, color);
+			Raylib.DrawRectangle(X, Y, W, H, color);
+		}
+		public void DrawRectangleOutline(Vector4 vector, float Thickness, Color color)
+		{
+			var X = (int)(vector.X * Scale);
+			var Y = (int)(vector.Y * Scale);
+			var W = (int)(vector.Z * Scale);
+			var H = (int)(vector.W * Scale);
+			Rectangle rect = new Rectangle(X, Y, W, H);
+			Raylib.DrawRectangleLinesEx(rect, Thickness * Scale, color);
 		}
 	}
-	internal interface IDrawable
+	public interface IDrawable
 	{
 		void Draw(DrawCore draw, Vector4 ParentSizeConstraint);
 	}

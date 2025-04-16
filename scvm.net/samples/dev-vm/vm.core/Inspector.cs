@@ -4,7 +4,7 @@ using vm.core.Controls;
 
 namespace vm.core;
 
-public class Inspector : IDrawable
+public class Inspector : ITabPage
 {
 	public SCVMMachine Machine;
 
@@ -15,5 +15,10 @@ public class Inspector : IDrawable
 
 	public void Draw(DrawCore draw, Vector4 ParentSizeConstraint)
 	{
+	}
+
+	public string GetTitle()
+	{
+		return "Inspector";
 	}
 }
