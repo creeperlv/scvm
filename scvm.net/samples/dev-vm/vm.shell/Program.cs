@@ -28,10 +28,14 @@ class Program
 		core.NormalFont = Raylib.GetFontDefault();
 		Console.WriteLine(Raylib.GetFontDefault().BaseSize);
 		MainWindow mw = new MainWindow();
+		mw.MenuBar.SubItems.Add(new MenuItem() { Header="File"});
+		mw.MenuBar.SubItems.Add(new MenuItem() { Header="Edit"});
+		mw.MenuBar.SubItems.Add(new MenuItem() { Header="Help"});
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
+			core.Framestart();
 			mw.Draw(core, new Vector4(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight()));
 			Raylib.EndDrawing();
 		}

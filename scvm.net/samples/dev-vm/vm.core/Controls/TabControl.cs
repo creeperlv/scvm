@@ -6,7 +6,7 @@ namespace vm.core.Controls
 	{
 		public void Draw(DrawCore draw, Vector4 ParentSizeConstraint)
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 	}
 	public interface ITabPage : IDrawable
