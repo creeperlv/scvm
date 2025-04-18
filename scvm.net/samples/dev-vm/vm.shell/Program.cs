@@ -28,15 +28,32 @@ class Program
 		core.NormalFont = Raylib.GetFontDefault();
 		Console.WriteLine(Raylib.GetFontDefault().BaseSize);
 		MainWindow mw = new MainWindow();
-		mw.MenuBar.SubItems.Add(new MenuItem() { Header="File"});
-		mw.MenuBar.SubItems.Add(new MenuItem() { Header="Edit"});
-		mw.MenuBar.SubItems.Add(new MenuItem() { Header="Help"});
+		mw.MenuBar.SubItems.Add(new MenuItem()
+		{
+			Header = "File",
+			SubItems ={
+				new MenuItem(){ Header="Open Executable" },
+				new MenuItem(){ Header="Exit", OnClick=()=>{
+						Environment.Exit(0);
+					}
+				}
+			}
+		});
+		mw.MenuBar.SubItems.Add(new MenuItem() { Header = "Edit" });
+		mw.MenuBar.SubItems.Add(new MenuItem() { Header = "Help",
+			SubItems =
+			{
+				new MenuItem(){ Header="About" }
+			}	
+		});
+		mw.Init();
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
 			core.Framestart();
 			mw.Draw(core, new Vector4(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight()));
+			core.Frameend();
 			Raylib.EndDrawing();
 		}
 	}
