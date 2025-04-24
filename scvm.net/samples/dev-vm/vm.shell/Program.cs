@@ -47,6 +47,8 @@ class Program
 			}	
 		});
 		mw.Init();
+		mw.TabControl.Titles.Add("Main VM");
+		mw.TabControl.Titles.Add("Inspector");
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();

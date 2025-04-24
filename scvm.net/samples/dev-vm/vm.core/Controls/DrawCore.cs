@@ -38,6 +38,7 @@ namespace vm.core.Controls
 				Pressed = Color.White,
 				Disabled = Color.White,
 			},
+			TabControlTabStrip = new Color(0x33, 0x33, 0x33),
 			ButtonBorderDistance = new Vector2(4, 2),
 			ButtonBorderThickness = 1,
 			GenericForeground = Color.White,

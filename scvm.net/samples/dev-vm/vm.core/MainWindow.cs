@@ -97,15 +97,18 @@ public class MainWindow : IDrawable
 	public void Draw(DrawCore draw, Vector4 ParentSizeConstraint)
 	{
 		draw.DrawRectangle(new Vector4(0, 0, ParentSizeConstraint.Z, draw.CurrentStyle.MenuBarHeight), draw.CurrentStyle.ButtonBackground.Normal);
+		var OX = ParentSizeConstraint.X;
+		var OY = ParentSizeConstraint.Y;
 		TryOpenMenu = false;
-		DrawMenu(draw, MenuBar, new Vector2(0, 0), true);
+		{
+			ParentSizeConstraint.W -= draw.CurrentStyle.MenuBarHeight;
+			ParentSizeConstraint.Y += draw.CurrentStyle.MenuBarHeight;
+			TabControl.Draw(draw, ParentSizeConstraint);
+		}
+		DrawMenu(draw, MenuBar, new Vector2(OX, OY), true);
 		if (draw.IsClicked && !TryOpenMenu)
 		{
 			CloseMenu(MenuBar);
 		}
-		ParentSizeConstraint.W -= draw.CurrentStyle.MenuBarHeight;
-		ParentSizeConstraint.Y += draw.CurrentStyle.MenuBarHeight;
-		draw.DrawRectangleOutline(new Rectangle(100, 100, 100, 100), 2, Color.White);
-		TabControl.Draw(draw, ParentSizeConstraint);
 	}
 }

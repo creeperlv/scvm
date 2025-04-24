@@ -16,6 +16,7 @@ namespace vm.core.Controls
 		public float ButtonBorderThickness;
 		public Color GenericForeground;
 		public Color GenericBackground;
+		public Color TabControlTabStrip;
 		public Vector2 ButtonBorderDistance;
 		public int MenuBarHeight;
 	}
