@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectVM.linker.core", "lin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectVM.linker.shell", "linker\directvm.linker.shell\DirectVM.linker.shell.csproj", "{541ED9D4-C6EF-4058-B2A0-97271A389D44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scvm.core", "..\..\core\Runtime\scvm.core\scvm.core.csproj", "{DC680906-75B4-68AB-B967-4AEAA1A0A7DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{541ED9D4-C6EF-4058-B2A0-97271A389D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{541ED9D4-C6EF-4058-B2A0-97271A389D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{541ED9D4-C6EF-4058-B2A0-97271A389D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC680906-75B4-68AB-B967-4AEAA1A0A7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC680906-75B4-68AB-B967-4AEAA1A0A7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC680906-75B4-68AB-B967-4AEAA1A0A7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC680906-75B4-68AB-B967-4AEAA1A0A7DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

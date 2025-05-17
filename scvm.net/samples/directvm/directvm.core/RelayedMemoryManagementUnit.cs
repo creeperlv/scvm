@@ -45,6 +45,16 @@ public unsafe class RelayedMemoryManagementUnit : IMemoryManagementUnit
 		StdLib.free((IntPtr)blocks);
 	}
 
+	public ulong GetPageTableSize()
+	{
+		throw new NotImplementedException();
+	}
+
+	public ulong GetPageTableStart()
+	{
+		throw new NotImplementedException();
+	}
+
 	public byte* GetPtr(ulong ptr, ulong PageTable, int CallerCPU, int AssumedAccessSize)
 	{
 		var BlockID = ptr.CastAs<ulong, uint>(0);
@@ -63,5 +73,15 @@ public unsafe class RelayedMemoryManagementUnit : IMemoryManagementUnit
 			return machine.SegFault(CallerCPU, ptr + (uint)AssumedAccessSize - 1);
 		}
 		return block.ptr + offset;
+	}
+
+	public void SetPageTableSize(ulong size)
+	{
+		throw new NotImplementedException();
+	}
+
+	public void SetPageTableStart(ulong offset)
+	{
+		throw new NotImplementedException();
 	}
 }
