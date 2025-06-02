@@ -38,6 +38,27 @@ namespace vm.core.Controls
 				Pressed = Color.White,
 				Disabled = Color.White,
 			},
+			HighlightedButtonBackground = new StatedColor()
+			{
+				Normal = new Color(0x22, 0x88, 0xEE),
+				Highlight = new Color(0x33, 0xAA, 0xFF),
+				Pressed = new Color(0x00, 0x66, 0xCC),
+				Disabled = new Color(0x36, 0x46, 0xA0),
+			},
+			HighlightedButtonBorder = new StatedColor()
+			{
+				Normal = new Color(0x22, 0x88, 0xEE),
+				Highlight = new Color(0x33, 0xAA, 0xFF),
+				Pressed = new Color(0x00, 0x66, 0xCC),
+				Disabled = new Color(0x36, 0x46, 0xA0),
+			},
+			HighlightedButtonForeground = new StatedColor()
+			{
+				Normal = Color.White,
+				Highlight = Color.White,
+				Pressed = Color.White,
+				Disabled = Color.White,
+			},
 			TabControlTabStrip = new Color(0x33, 0x33, 0x33),
 			ButtonBorderDistance = new Vector2(4, 2),
 			ButtonBorderThickness = 1,
@@ -61,7 +82,7 @@ namespace vm.core.Controls
 			IsLeftDownLastFrame = IsLeftDown;
 			if (!IsLeftDown) Selection = -1;
 		}
-		public bool Button(Vector2 Pos, Vector2 Size, string content, Alignment HorizontalAlignment = Alignment.Center)
+		public bool Button(Vector2 Pos, Vector2 Size, string content, Alignment HorizontalAlignment = Alignment.Center,bool IsHighlighted=false)
 		{
 			Rectangle rect = new Rectangle(Pos, Size);
 			var isInside = Raylib.CheckCollisionPointRec(PointerPos, rect);
@@ -81,15 +102,18 @@ namespace vm.core.Controls
 					break;
 			}
 			bool WillInvoke = false;
+			StatedColor Background= IsHighlighted? CurrentStyle.HighlightedButtonBackground:CurrentStyle.ButtonBackground;
+			StatedColor Border= IsHighlighted? CurrentStyle.HighlightedButtonBorder:CurrentStyle.ButtonBorder;
+			StatedColor Foreground= IsHighlighted? CurrentStyle.HighlightedButtonForeground:CurrentStyle.ButtonForeground;
 			if (isInside)
 			{
-				Color BG = CurrentStyle.ButtonBackground.Highlight;
-				Color BD = CurrentStyle.ButtonBorder.Highlight;
+				Color BG = Background.Highlight;
+				Color BD = Border.Highlight;
 				if ((IsLeftDown && !IsLeftDownLastFrame) || (IsLeftDown && Selection == id))
 				{
 					Selection = id;
-					BG = CurrentStyle.ButtonBackground.Pressed;
-					BD = CurrentStyle.ButtonBorder.Pressed;
+					BG = Background.Pressed;
+					BD = Border.Pressed;
 				}
 				else
 				if (!IsLeftDown && Selection == id)
@@ -98,13 +122,13 @@ namespace vm.core.Controls
 				}
 				DrawRectangle(rect, BG);
 				DrawRectangleOutline(rect, CurrentStyle.ButtonBorderThickness, BD);
-				DrawText(Pos + Offset, Size, content, CurrentStyle.ButtonForeground.Highlight);
+				DrawText(Pos + Offset, Size, content, Foreground.Highlight);
 			}
 			else
 			{
-				DrawRectangle(rect, CurrentStyle.ButtonBackground.Normal);
-				DrawRectangleOutline(rect, CurrentStyle.ButtonBorderThickness, CurrentStyle.ButtonBorder.Normal);
-				DrawText(Pos + Offset, Size, content, CurrentStyle.ButtonForeground.Normal);
+				DrawRectangle(rect, Background.Normal);
+				DrawRectangleOutline(rect, CurrentStyle.ButtonBorderThickness, Border.Normal);
+				DrawText(Pos + Offset, Size, content, Foreground.Normal);
 			}
 			id++;
 			return WillInvoke;

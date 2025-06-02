@@ -9,10 +9,14 @@ namespace vm.core.Controls
 		public List<string> Titles = new List<string>();
 		public void AddPage(ITabPage tabPage)
 		{
-
+			TabPages.Add(tabPage);
+			Titles.Add(tabPage.GetTitle());
 		}
 		public void RemovePage(ITabPage page)
 		{
+			var i = TabPages.IndexOf(page);
+			Titles.RemoveAt(i);
+			TabPages.RemoveAt(i);
 		}
 		int SelectedTabPage = -1;
 		public void Draw(DrawCore draw, Vector4 ParentSizeConstraint)
@@ -23,6 +27,9 @@ namespace vm.core.Controls
 			var startPos = new Vector2(ParentSizeConstraint.X, ParentSizeConstraint.Y);
 			int Index = 0;
 			draw.DrawRectangle(new Rectangle(startPos, new Vector2(ParentSizeConstraint.W, Height)), draw.CurrentStyle.TabControlTabStrip);
+			var contentSize= ParentSizeConstraint;
+			contentSize.W-=Height;
+			contentSize.Y+=Height;
 			foreach (var item in Titles)
 			{
 				var size = draw.MeasureText(Vector2.PositiveInfinity, item);
@@ -30,14 +37,15 @@ namespace vm.core.Controls
 				int id = Index;
 
 				Vector2 RealSize = new(width, Height);
-				if (draw.Button(startPos, RealSize, item, Alignment.Center))
+				if (draw.Button(startPos, RealSize, item, Alignment.Center, id == SelectedTabPage))
 				{
 					SelectedTabPage = id;
 				}
-				if (id == SelectedTabPage)
-				{
-					draw.DrawRectangleOutline(new Rectangle(startPos, RealSize), 1, new Color(0x22, 0x88, 0xEE));
-				}
+				//if (id == SelectedTabPage)
+				//{
+				//	draw.DrawRectangleOutline(new Rectangle(startPos, RealSize), 1, new Color(0x22, 0x88, 0xEE));
+				//}
+				TabPages[Index].Draw(draw, contentSize);
 				startPos.X += width;
 				Index++;
 			}

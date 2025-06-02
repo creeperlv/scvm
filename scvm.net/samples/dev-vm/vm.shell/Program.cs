@@ -1,4 +1,5 @@
 ﻿using Raylib_cs.BleedingEdge;
+using scvm.core;
 using System.Numerics;
 using vm.core;
 using vm.core.Controls;
@@ -47,8 +48,10 @@ class Program
 			}	
 		});
 		mw.Init();
-		mw.TabControl.Titles.Add("Main VM");
-		mw.TabControl.Titles.Add("Inspector");
+		//mw.TabControl.Titles.Add("Main VM");
+		//mw.TabControl.Titles.Add("Inspector");
+		SCVMMachine machine=new SCVMMachine();
+		mw.TabControl.AddPage(new Inspector(machine));
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();

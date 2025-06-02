@@ -13,6 +13,9 @@ namespace vm.core.Controls
 		public StatedColor ButtonBackground;
 		public StatedColor ButtonBorder;
 		public StatedColor ButtonForeground;
+		public StatedColor HighlightedButtonBackground;
+		public StatedColor HighlightedButtonBorder;
+		public StatedColor HighlightedButtonForeground;
 		public float ButtonBorderThickness;
 		public Color GenericForeground;
 		public Color GenericBackground;
