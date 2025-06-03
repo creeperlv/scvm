@@ -82,7 +82,7 @@ namespace vm.core.Controls
 			IsLeftDownLastFrame = IsLeftDown;
 			if (!IsLeftDown) Selection = -1;
 		}
-		public bool Button(Vector2 Pos, Vector2 Size, string content, Alignment HorizontalAlignment = Alignment.Center,bool IsHighlighted=false)
+		public bool Button(Vector2 Pos, Vector2 Size, string content, Alignment HorizontalAlignment = Alignment.Center, bool IsHighlighted = false)
 		{
 			Rectangle rect = new Rectangle(Pos, Size);
 			var isInside = Raylib.CheckCollisionPointRec(PointerPos, rect);
@@ -102,9 +102,9 @@ namespace vm.core.Controls
 					break;
 			}
 			bool WillInvoke = false;
-			StatedColor Background= IsHighlighted? CurrentStyle.HighlightedButtonBackground:CurrentStyle.ButtonBackground;
-			StatedColor Border= IsHighlighted? CurrentStyle.HighlightedButtonBorder:CurrentStyle.ButtonBorder;
-			StatedColor Foreground= IsHighlighted? CurrentStyle.HighlightedButtonForeground:CurrentStyle.ButtonForeground;
+			StatedColor Background = IsHighlighted ? CurrentStyle.HighlightedButtonBackground : CurrentStyle.ButtonBackground;
+			StatedColor Border = IsHighlighted ? CurrentStyle.HighlightedButtonBorder : CurrentStyle.ButtonBorder;
+			StatedColor Foreground = IsHighlighted ? CurrentStyle.HighlightedButtonForeground : CurrentStyle.ButtonForeground;
 			if (isInside)
 			{
 				Color BG = Background.Highlight;
@@ -165,6 +165,110 @@ namespace vm.core.Controls
 					CurrentPos.X = Position.X;
 				}
 			}
+		}
+		public void DrawInt(Vector2 Position, int data, Color color)
+		{
+			var c = new Color(color.R, color.G, color.B, color.A);
+			Vector2 CurrentPos = Position;
+			int H = MeasureInt(data);
+			CurrentPos.X += H;
+			while (true)
+			{
+				var d = data % 10;
+				data = data / 10;
+				char ch = (char)('0' + d);
+				int point = ch;
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				var rectangle = Raylib.GetGlyphAtlasRec(NormalFont, point);
+				CurrentPos.X -= info.AdvanceX + info.Image.Width + 1;
+				Raylib.DrawTextCodepoint(NormalFont, point, CurrentPos * Scale, NormalFont.BaseSize * Scale, color);
+				if (data == 0)
+				{
+					break;
+				}
+			}
+		}
+		public int MeasureInt(int data)
+		{
+			int V = 0;
+			while (true)
+			{
+				var d = data % 10;
+				data = data / 10;
+				char ch = (char)('0' + d);
+				int point = ch;
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				var rectangle = Raylib.GetGlyphAtlasRec(NormalFont, point);
+				V += info.AdvanceX + info.Image.Width + 1;
+				if (data == 0)
+				{
+					break;
+				}
+			}
+			return V;
+		}
+		public int MeasureHex(byte data)
+		{
+			int W = 0;
+			byte b0 = data;
+			while (true)
+			{
+				var d = b0 % 0x10;
+				b0 = (byte)(b0 / 0x10);
+				char ch = (char)('0' + d);
+				if (d >= 0xA)
+				{
+					ch = (char)('A' + d - 0xA);
+				}
+				int point = ch;
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				W += info.AdvanceX + info.Image.Width + 1;
+				if (b0 == 0)
+				{
+					break;
+				}
+			}
+			if (data <= 0xF)
+			{
+				int point = '0';
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				W += info.AdvanceX + info.Image.Width + 1;
+			}
+			return W;
+		}
+		public int DrawHex(Vector2 Position, byte data, Color color)
+		{
+			var c = new Color(color.R, color.G, color.B, color.A);
+			Vector2 CurrentPos = Position;
+			byte b0 = data;
+			var w = MeasureHex(data);
+			CurrentPos.X += w;
+			while (true)
+			{
+				var d = b0 % 0x10;
+				b0 = (byte)(b0 / 0x10);
+				char ch = (char)('0' + d);
+				if (d >= 0xA)
+				{
+					ch = (char)('A' + d - 0xA);
+				}
+				int point = ch;
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				CurrentPos.X -= info.AdvanceX + info.Image.Width + 1;
+				Raylib.DrawTextCodepoint(NormalFont, point, CurrentPos * Scale, NormalFont.BaseSize * Scale, color);
+				if (b0 == 0)
+				{
+					break;
+				}
+			}
+			if (data <= 0xF)
+			{
+				int point = '0';
+				var info = Raylib.GetGlyphInfo(NormalFont, point);
+				CurrentPos.X -= info.AdvanceX + info.Image.Width + 1;
+				Raylib.DrawTextCodepoint(NormalFont, point, CurrentPos * Scale, NormalFont.BaseSize * Scale, color);
+			}
+			return w;
 		}
 		public Vector2 MeasureText(Vector2 Size, string Text)
 		{

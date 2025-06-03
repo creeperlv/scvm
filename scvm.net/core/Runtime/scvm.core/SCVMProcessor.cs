@@ -48,6 +48,14 @@ namespace scvm.core
 			HWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
 			state.Register.InitRegisters();
 		}
+		
+		public SCVMProcessor(int ID)
+		{
+			SWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
+			HWInterrupts = malloc<FullInterruptConfig>(sizeof(FullInterruptConfig) * InterruptMaxCount);
+			state.Register.InitRegisters();
+			this.ThisProcessorID = ID;
+		}
 
 		public void Dispose()
 		{

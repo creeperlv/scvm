@@ -26,7 +26,7 @@ namespace vm.core.Controls
 			int Height = draw.NormalFont.BaseSize + 4;
 			var startPos = new Vector2(ParentSizeConstraint.X, ParentSizeConstraint.Y);
 			int Index = 0;
-			draw.DrawRectangle(new Rectangle(startPos, new Vector2(ParentSizeConstraint.W, Height)), draw.CurrentStyle.TabControlTabStrip);
+			draw.DrawRectangle(new Rectangle(startPos, new Vector2(ParentSizeConstraint.Z, Height)), draw.CurrentStyle.TabControlTabStrip);
 			var contentSize= ParentSizeConstraint;
 			contentSize.W-=Height;
 			contentSize.Y+=Height;

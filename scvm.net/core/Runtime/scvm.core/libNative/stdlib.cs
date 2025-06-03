@@ -7,7 +7,7 @@ namespace scvm.core.libNative
 	{
 		public static unsafe void* memcpy(void* dest_str, void* src_str, uint n)
 		{
-			Buffer.MemoryCopy(src_str,dest_str,n,n);
+			Buffer.MemoryCopy(src_str, dest_str, n, n);
 			return dest_str;
 		}
 	}
@@ -28,6 +28,15 @@ namespace scvm.core.libNative
 		public static T* malloc<T>(int size) where T : unmanaged
 		{
 			return (T*)Marshal.AllocHGlobal(size);
+		}
+		public static T* calloc<T>(int size) where T : unmanaged
+		{
+			var ptr = (T*)Marshal.AllocHGlobal(size);
+			for (int i = 0; i < size; i++)
+			{
+				ptr[i] = default(T);
+			}
+			return ptr;
 		}
 		public static void free(void* ptr)
 		{

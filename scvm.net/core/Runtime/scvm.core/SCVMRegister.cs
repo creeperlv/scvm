@@ -12,7 +12,8 @@ namespace scvm.core
 		public byte* Registers;
 		public void InitRegisters()
 		{
-			Registers = malloc<byte>(RegisterSize / 8);
+			Registers = calloc<byte>(RegisterSize + 8);
+			RegisterLimit = RegisterSize;
 		}
 
 		public uint RegisterLimit;

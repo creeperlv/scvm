@@ -51,13 +51,15 @@ class Program
 		//mw.TabControl.Titles.Add("Main VM");
 		//mw.TabControl.Titles.Add("Inspector");
 		SCVMMachine machine=new SCVMMachine();
+		SCVMCPU cpu=new SCVMCPU(4);
+		machine.CPU = cpu;
 		mw.TabControl.AddPage(new Inspector(machine));
 		while (!Raylib.WindowShouldClose())
 		{
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
 			core.Framestart();
-			mw.Draw(core, new Vector4(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight()));
+			mw.Draw(core, new Vector4(0, 0, Raylib.GetRenderWidth()/core.Scale, Raylib.GetRenderHeight() / core.Scale));
 			core.Frameend();
 			Raylib.EndDrawing();
 		}
